@@ -10,6 +10,10 @@ app.use(
     })
 )
 
+app.get('/api/products/:slug', (req: Request, res: Response) => {
+    res.json(sampleProducts.find((x) => x.slug === req.params.slug))
+})
+
 app.use('/api/products',(req:Request,res:Response)=>{
     res.json(sampleProducts)
 });
