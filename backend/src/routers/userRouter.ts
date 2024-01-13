@@ -17,7 +17,6 @@ userRouter.post(
                     isAdmin: user.isAdmin,
                     token: generateToken(user),
                 })
-                res.status(401).send({ message: 'Invalid password' })
                 return
             }
         }
