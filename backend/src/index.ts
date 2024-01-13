@@ -4,6 +4,7 @@ import cors from 'cors';
 import * as mongoose from "mongoose";
 import {productRouter} from "./routers/productRouter.js";
 import {seedRouter} from "./routers/seedRouter.js";
+import {userRouter} from "./routers/userRouter.js";
 const app = express();
 
 dotenv.config()
@@ -31,9 +32,10 @@ app.use(
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
+
 app.use('/api/products', productRouter)
 app.use('/api/seed', seedRouter)
-
+app.use('/api/users',userRouter)
 const PORT = 5050;
 app.listen(5050,()=>{
     console.log(`server is listening at ${PORT}`)
