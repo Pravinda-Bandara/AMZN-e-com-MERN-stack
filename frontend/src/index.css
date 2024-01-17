@@ -1,0 +1,32 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.product-image{
+  max-width: 400px;
+  width: 100%;
+}
+
+.rating span{
+  color:#ffc000;
+}
+
+img.large{
+  max-width: 100%;
+}
+img.thumbnail{
+  height: 80px;
+}
+.checkout-steps >div{
+  border-bottom: 0.2rem solid #a0a0a0;
+  color: #a0a0a0;
+}
+
+.checkout-steps >div.active{
+  border-bottom: 0.2rem solid #f08000;
+  color: #f08000;
+}
