@@ -9,8 +9,6 @@ const app = express();
 
 dotenv.config()
 
-dotenv.config()
-
 const MONGODB_URI =
     process.env.MONGODB_URI || 'mongodb://localhost/tsmernamazona'
 mongoose.set('strictQuery', true)
