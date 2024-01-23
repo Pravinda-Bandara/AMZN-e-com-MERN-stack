@@ -48,7 +48,7 @@ export default function SignupPage() {
         if (userInfo) {
             navigate(redirect)
         }
-    }, [navigate, redirect, userInfo])
+    }, [userInfo])
 
     return (
         <Container className="small-container">

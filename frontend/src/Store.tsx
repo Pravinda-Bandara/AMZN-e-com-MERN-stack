@@ -1,4 +1,4 @@
-import React from "react";
+ import React from "react";
 import {Cart, CartItem, ShippingAddress} from "./types/CartItem.ts";
 import {UserInfo} from "./types/UserInfo.ts";
 
@@ -20,7 +20,7 @@ const initialState: AppState = {
             : "light",
     cart: {
         cartItems: localStorage.getItem("cartItems")
-            ? JSON.parse(localStorage.getItem("cartItems")!)/*in local storage,have as string,so need to convert to ts object*/
+            ? JSON.parse(localStorage.getItem("cartItems")!)
             : [],
         shippingAddress: localStorage.getItem("shippingAddress")
             ? JSON.parse(localStorage.getItem("shippingAddress")!)
@@ -41,7 +41,8 @@ type Action =
     | { type: "CART_REMOVE_ITEM"; payload: CartItem }
     | { type: "USER_SIGNIN"; payload: UserInfo }
     | { type: "USER_SIGNOUT"; payload: UserInfo }
-    | { type: 'SAVE_SHIPPING_ADDRESS'; payload: ShippingAddress };
+    | { type: 'SAVE_SHIPPING_ADDRESS'; payload: ShippingAddress }
+    | { type: 'SAVE_PAYMENT_METHOD'; payload: string };
 
 
 
@@ -91,6 +92,11 @@ function reducer(state: AppState, action: Action): AppState {
                     ...state.cart,
                     shippingAddress: action.payload,
                 },
+            }
+        case 'SAVE_PAYMENT_METHOD':
+            return {
+                ...state,
+                cart: { ...state.cart, paymentMethod: action.payload },
             }
         default:
             return state;

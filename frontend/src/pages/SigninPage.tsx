@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import {EventHandler, useContext, useEffect, useState} from 'react'
 import { Button, Container, Form } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -37,12 +37,25 @@ export default function SigninPage() {
             toast.error(getError(err as ApiError))
         }
     }
-
+/*    const submitHandler: EventHandler<React.FormEvent> = async (e) => {
+        e.preventDefault();
+        try {
+            const data = await signin({
+                email,
+                password,
+            });
+            dispatch({ type: 'USER_SIGNIN', payload: data });
+            localStorage.setItem('userInfo', JSON.stringify(data));
+            navigate(redirect);
+        } catch (err) {
+            toast.error(getError(err as ApiError));
+        }
+    };*/
     useEffect(() => {
         if (userInfo) {
             navigate(redirect)
         }
-    }, [navigate, redirect, userInfo])
+    }, [userInfo])
 
     return (
         <Container className="small-container">

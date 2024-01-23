@@ -53,7 +53,7 @@ export const sampleProducts:Product[]=[
     }
 ]
 
-export const sampleUsers: User[] = [
+export const  sampleUsers: User[] = [
     {
         name: 'Pravinda',
         email: 'admin@example.com',

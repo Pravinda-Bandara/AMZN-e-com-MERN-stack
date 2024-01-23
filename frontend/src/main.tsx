@@ -31,30 +31,11 @@ const router = createBrowserRouter(
             <Route path="product/:slug" element={<ProductPage/>}/>
             <Route path="signin" element={<SigninPage />} />
             <Route path="/signup" element={<SignupPage />} />
-            {/*<Route path="dashboard" element={<Dashboard />} />
-             ... etc. */}
             <Route path="/cart" element={<CartPage />} />
             <Route path="/shipping" element={<ShippingAddressPage />} />
         </Route>
     )
 );
-/*const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <App />,
-        children: [
-            {
-                index: true,
-                element: <HomePage />,
-            },
-            {
-                path: "product/:slug",
-                element: <ProductPage />,
-            },
-        ],
-    },
-]);*/
-
 
 const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById('root')!).render(
