@@ -18,11 +18,11 @@ export default function ShippingAddressPage() {
     const [postalCode, setPostalCode] = useState(
         shippingAddress.postalCode || ''
     )
-    useEffect(() => {
+    /*useEffect(() => {
         if (!userInfo) {
             navigate('/signin?redirect=/shipping')
         }
-    }, [userInfo, navigate])
+    }, [userInfo, navigate])*/
     const [country, setCountry] = useState(shippingAddress.country || '')
     const submitHandler = (e: React.SyntheticEvent) => {
         e.preventDefault()
