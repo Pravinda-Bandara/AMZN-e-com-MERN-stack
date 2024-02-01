@@ -50,7 +50,7 @@ export const sampleProducts:Product[]=[
         description:'high quality product',
         rating:4.5,
         numReviews:14
-    }
+    },
 ]
 
 export const  sampleUsers: User[] = [

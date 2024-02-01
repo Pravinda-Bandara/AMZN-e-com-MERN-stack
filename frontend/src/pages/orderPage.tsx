@@ -7,7 +7,7 @@ import MessageBox from "../components/MessageBox.tsx";
 import {getError} from "../util.ts";
 import {ApiError} from "../types/ApiError.ts";
 import {Helmet} from "react-helmet-async";
-import {Card, Col, ListGroup, Row} from "react-bootstrap";
+import {Button, Card, Col, ListGroup, Row} from "react-bootstrap";
 
 export default function OrderPage() {
     const { state } = useContext(Store)
@@ -129,7 +129,9 @@ export default function OrderPage() {
                                             <strong>${order.totalPrice.toFixed(2)}</strong>
                                         </Col>
                                     </Row>
+                                    <Button className="mt-3">Confirm Payment</Button>
                                 </ListGroup.Item>
+
                             </ListGroup>
                         </Card.Body>
                     </Card>
