@@ -34,7 +34,9 @@ export default function SigninPage() {
             localStorage.setItem('userInfo', JSON.stringify(data))
             navigate(redirect)
         } catch (err) {
-            toast.error(getError(err as ApiError))
+            toast.error(getError(err as ApiError),{
+                autoClose:1000
+            })
         }
     }
 /*    const submitHandler: EventHandler<React.FormEvent> = async (e) => {

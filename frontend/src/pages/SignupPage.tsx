@@ -27,7 +27,9 @@ export default function SignupPage() {
     const submitHandler = async (e: React.SyntheticEvent) => {
         e.preventDefault()
         if (password !== confirmPassword) {
-            toast.error('Passwords do not match')
+            toast.error('Passwords do not match',{
+                autoClose:1000
+            })
             return
         }
         try {
@@ -40,7 +42,9 @@ export default function SignupPage() {
             localStorage.setItem('userInfo', JSON.stringify(data))
             navigate(redirect)
         } catch (err) {
-            toast.error(getError(err as ApiError))
+            toast.error(getError(err as ApiError),{
+                autoClose:1000
+            })
         }
     }
 

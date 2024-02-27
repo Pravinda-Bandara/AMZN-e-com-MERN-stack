@@ -22,6 +22,7 @@ orderRouter.post(
     '/',
     isAuth,
     asyncHandler(async (req: Request, res: Response) => {
+
         if (req.body.orderItems.length === 0) {
             res.status(400).send({ message: 'Cart is empty' })
         } else {
@@ -41,6 +42,25 @@ orderRouter.post(
             res
                 .status(201)
                 .send({ message: 'Order Not Found', order: createdOrder })
+        }
+    })
+)
+
+orderRouter.put(
+    '/:id/pay',
+    isAuth,
+    asyncHandler(async (req: Request, res: Response) => {
+        const order = await OrderModel.findById(req.params.id).populate('user')
+
+        if (order) {
+            order.isPaid = true
+            order.paidAt = new Date(Date.now())
+
+            const updatedOrder = await order.save()
+            console.log(updatedOrder)
+            res.send(updatedOrder)
+        } else {
+            res.status(404).send({ message: 'Order Not Found' })
         }
     })
 )

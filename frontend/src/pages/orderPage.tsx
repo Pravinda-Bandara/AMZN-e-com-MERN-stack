@@ -1,13 +1,14 @@
 import React, {useContext} from "react";
 import {Store} from "../Store.tsx";
-import {Link, useParams} from "react-router-dom";
-import {useGetOrderDetailsQuery} from "../hooks/orderHooks.ts";
+import {Link, useNavigate, useParams} from "react-router-dom";
+import {useGetOrderDetailsQuery, usePayOrderMutation} from "../hooks/orderHooks.ts";
 import LoadingBox from "../components/LoadingBox.tsx";
 import MessageBox from "../components/MessageBox.tsx";
 import {getError} from "../util.ts";
 import {ApiError} from "../types/ApiError.ts";
 import {Helmet} from "react-helmet-async";
 import {Button, Card, Col, ListGroup, Row} from "react-bootstrap";
+import {toast} from "react-toastify";
 
 export default function OrderPage() {
     const { state } = useContext(Store)
@@ -16,6 +17,8 @@ export default function OrderPage() {
     const params = useParams()
     const { id: orderId } = params
 
+    const navigate = useNavigate()
+
     const {
         data: order,
         isLoading,
@@ -23,10 +26,17 @@ export default function OrderPage() {
         refetch,
     } = useGetOrderDetailsQuery(orderId!)
 
+    const { mutateAsync: payOrder, isPending: loadingPay } = usePayOrderMutation()
+
+    const confirmHandler =async ()=>{
+        await payOrder({ orderId: orderId! })
+        refetch()
+        toast.success('Order is paid')
+    }
     return isLoading ? (
         <LoadingBox></LoadingBox>
     ) : error ? (
-        <MessageBox variant="danger">{getError(error as ApiError)}</MessageBox>
+        <MessageBox variant="danger">{getError(error as unknown as ApiError)}</MessageBox>
     ) : !order ? (
         <MessageBox variant="danger">Order Not Found</MessageBox>
     ) : (
@@ -63,7 +73,7 @@ export default function OrderPage() {
                             </Card.Text>
                             {order.isPaid ? (
                                 <MessageBox variant="success">
-                                    Paid at {order.paidAt}
+                                    Paid at {new Date(order.paidAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })} on {new Date(order.paidAt).toLocaleDateString()}
                                 </MessageBox>
                             ) : (
                                 <MessageBox variant="warning">Not Paid</MessageBox>
@@ -121,7 +131,7 @@ export default function OrderPage() {
                                     </Row>
                                 </ListGroup.Item>
                                 <ListGroup.Item>
-                                    <Row>
+                                    <Row>`
                                         <Col>
                                             <strong> Order Total</strong>
                                         </Col>
@@ -129,7 +139,11 @@ export default function OrderPage() {
                                             <strong>${order.totalPrice.toFixed(2)}</strong>
                                         </Col>
                                     </Row>
-                                    <Button className="mt-3">Confirm Payment</Button>
+                                    {order.isPaid ? (
+                                            <Button className="mt-3 btn-success disabled" >Already Confirmed </Button>
+                                    ) : (
+                                        <Button className="mt-3" onClick={confirmHandler}>Confirm Paid</Button>
+                                    )}
                                 </ListGroup.Item>
 
                             </ListGroup>

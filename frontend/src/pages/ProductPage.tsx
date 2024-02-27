@@ -30,14 +30,18 @@ function ProductPage() {
         const existItem = cart.cartItems.find((x) => x._id === product!._id)
         const quantity = existItem ? existItem.quantity + 1 : 1
         if (product!.countInStock < quantity) {
-            toast.warn('Sorry. Product is out of stock')
+            toast.warn('Sorry. Product is out of stock',{
+                autoClose:1000
+            })
             return
         }
         dispatch({
             type: 'CART_ADD_ITEM',
             payload: { ...convertProductToCartItem(product!), quantity },
         })
-        toast.success('Product added to the cart')
+        toast.success('Product added to the cart',{
+            autoClose:1000
+        })
         navigate('/cart')
     }
 
@@ -45,7 +49,7 @@ function ProductPage() {
     return isLoading ? (
         <LoadingBox />
     ) : error ? (
-        <MessageBox variant="danger">{getError(error as ApiError)}</MessageBox>
+        <MessageBox variant="danger">{getError(error as unknown as ApiError)}</MessageBox>
     ) : !product ? (
         <MessageBox variant="danger">Product Not Found</MessageBox>
     ) : (

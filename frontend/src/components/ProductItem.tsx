@@ -18,14 +18,18 @@ export function ProductItem({product}:{product:Product}) {
         const existItem = cartItems.find((x) => x._id === product._id)
         const quantity = existItem ? existItem.quantity + 1 : 1
         if (product.countInStock < quantity) {
-            toast.warn('Sorry. Product is out of stock')
+            toast.warn('Sorry. Product is out of stock',{
+                autoClose:1000
+            })
             return
         }
         dispatch({
             type: 'CART_ADD_ITEM',
             payload: { ...item, quantity },
         })
-        toast.success('Product added to the cart')
+        toast.success('Product added to the cart',{
+            autoClose:1000
+        })
     }
 
     return (

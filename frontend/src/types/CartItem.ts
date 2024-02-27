@@ -4,7 +4,7 @@ export type CartItem = {
     quantity: number
     countInStock: number
     price: number
-    _id: string
+    _id: string |undefined
     name: string
 }
 

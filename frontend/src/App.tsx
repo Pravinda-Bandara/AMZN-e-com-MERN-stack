@@ -21,6 +21,7 @@ function App() {
         dispatch({ type: 'SWITCH_MODE' })
     }
     const signoutHandler = () => {
+        // @ts-ignore
         dispatch({ type: 'USER_SIGNOUT' })
         localStorage.removeItem('userInfo')
         localStorage.removeItem('cartItems')
