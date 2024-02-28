@@ -39,8 +39,9 @@ export const isAuth=(req:Request,res:Response,next:NextFunction)=>{
 }
 
 export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+
     // @ts-ignore
-    if (req.user && req.user.isAdmin) {
+    if (req.body.user && req.body.user.isAdmin) {
         next()
     } else {
         res.status(401).send({ message: 'Invalid Admin Token' })
