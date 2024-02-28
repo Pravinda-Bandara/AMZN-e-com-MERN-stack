@@ -102,19 +102,6 @@ orderRouter.put(
     })
 )
 
-
-
-/*
-orderRouter.get(
-    '/',
-    isAuth,
-    isAdmin,
-    asyncHandler(async (req: Request, res: Response) => {
-        const orders = await OrderModel.find().populate('user', 'name')
-        res.send(orders)
-    })
-)
-
 orderRouter.put(
     '/:id/deliver',
     isAuth,
@@ -134,23 +121,8 @@ orderRouter.put(
     })
 )
 
-orderRouter.delete(
-    '/:id',
-    isAuth,
-    isAdmin,
-    asyncHandler(async (req: Request, res: Response) => {
-        const order = await OrderModel.findById(req.params.id)
-        if (order) {
-            const deleteOrder = await order.deleteOne()
-            res.send({ message: 'Order Deleted', order: deleteOrder })
-        } else {
-            res.status(404).send({ message: 'Order Not Found' })
-        }
-    })
-)
 
 
 
-*/
 
 
