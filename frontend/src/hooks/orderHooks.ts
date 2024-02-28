@@ -46,7 +46,7 @@ export const usePayOrderMutation = () =>
             ).data,
     })
 
-/*export const useDeliverOrderMutation = () =>
+export const useDeliverOrderMutation = () =>
     useMutation({
         mutationFn: async (orderId: string) =>
             (
@@ -54,7 +54,7 @@ export const usePayOrderMutation = () =>
                     `api/orders/${orderId}/deliver`
                 )
             ).data,
-    })*/
+    })
 
 export const useDeleteOrderMutation = () =>
     useMutation({
