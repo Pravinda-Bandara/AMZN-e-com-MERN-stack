@@ -1,38 +1,46 @@
-import React, {useContext} from "react";
-import {Store} from "../Store.tsx";
-import {Link, useNavigate, useParams} from "react-router-dom";
-import {useGetOrderDetailsQuery, usePayOrderMutation} from "../hooks/orderHooks.ts";
+import React, { useContext } from "react";
+import { Store } from "../Store.tsx";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useGetOrderDetailsQuery, usePayOrderMutation, useDeliverOrderMutation } from "../hooks/orderHooks.ts";
 import LoadingBox from "../components/LoadingBox.tsx";
 import MessageBox from "../components/MessageBox.tsx";
-import {getError} from "../util.ts";
-import {ApiError} from "../types/ApiError.ts";
-import {Helmet} from "react-helmet-async";
-import {Button, Card, Col, ListGroup, Row} from "react-bootstrap";
-import {toast} from "react-toastify";
+import { getError } from "../util.ts";
+import { ApiError } from "../types/ApiError.ts";
+import { Helmet } from "react-helmet-async";
+import { Button, Card, Col, ListGroup, Row } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 export default function OrderPage() {
-    const { state } = useContext(Store)
-    const { userInfo } = state
+    const { state } = useContext(Store);
+    const { userInfo } = state;
 
-    const params = useParams()
-    const { id: orderId } = params
+    const params = useParams();
+    const { id: orderId } = params;
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const {
         data: order,
         isLoading,
         error,
         refetch,
-    } = useGetOrderDetailsQuery(orderId!)
+    } = useGetOrderDetailsQuery(orderId!);
 
-    const { mutateAsync: payOrder, isPending: loadingPay } = usePayOrderMutation()
+    const { mutateAsync: payOrder, isPending: loadingPay } = usePayOrderMutation();
+    const { mutateAsync: deliverOrder, isPending: loadingDeliver } = useDeliverOrderMutation();
 
-    const confirmHandler =async ()=>{
-        await payOrder({ orderId: orderId! })
-        refetch()
-        toast.success('Order is paid')
-    }
+    const confirmHandler = async () => {
+        await payOrder({ orderId: orderId! });
+        refetch();
+        toast.success("Order is paid");
+    };
+
+    const deliverHandler = async () => {
+        await deliverOrder(orderId!);
+        refetch();
+        toast.success("Order is delivered");
+    };
+
     return isLoading ? (
         <LoadingBox></LoadingBox>
     ) : error ? (
@@ -58,7 +66,7 @@ export default function OrderPage() {
                             </Card.Text>
                             {order.isDelivered ? (
                                 <MessageBox variant="success">
-                                    Delivered at {order.deliveredAt}
+                                    Delivered at {new Date(order.deliveredAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })} on {new Date(order.deliveredAt).toLocaleDateString()}
                                 </MessageBox>
                             ) : (
                                 <MessageBox variant="warning">Not Delivered</MessageBox>
@@ -131,7 +139,7 @@ export default function OrderPage() {
                                     </Row>
                                 </ListGroup.Item>
                                 <ListGroup.Item>
-                                    <Row>`
+                                    <Row>
                                         <Col>
                                             <strong> Order Total</strong>
                                         </Col>
@@ -139,18 +147,26 @@ export default function OrderPage() {
                                             <strong>${order.totalPrice.toFixed(2)}</strong>
                                         </Col>
                                     </Row>
-                                    {order.isPaid ? (
-                                            <Button className="mt-3 btn-success disabled" >Already Confirmed </Button>
-                                    ) : (
-                                        <Button className="mt-3" onClick={confirmHandler}>Confirm Paid</Button>
+                                    {!order.isPaid && (
+                                        <Button className="mt-3" onClick={confirmHandler}>
+                                            Confirm Payment
+                                        </Button>
+                                    ) }
+                                    {userInfo?.isAdmin && !order.isDelivered && (
+                                        <Button
+                                            className="mt-3 mx-2"
+                                            onClick={deliverHandler}
+                                            disabled={loadingDeliver}
+                                        >
+                                            {loadingDeliver ? "Delivering..." : "Confirm Deliver"}
+                                        </Button>
                                     )}
                                 </ListGroup.Item>
-
                             </ListGroup>
                         </Card.Body>
                     </Card>
                 </Col>
             </Row>
         </div>
-    )
+    );
 }
