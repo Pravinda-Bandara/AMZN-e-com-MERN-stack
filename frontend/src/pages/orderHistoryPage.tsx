@@ -1,46 +1,44 @@
-import { useState } from 'react'; // Import useState
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDeleteOrderMutation, useGetOrderHistoryQuery } from '../hooks/orderHooks.ts';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox.tsx';
-import React from 'react';
 import { getError } from '../util.ts';
 import { ApiError } from '../types/ApiError.ts';
 import MessageBox from '../components/MessageBox.tsx';
-import { Button, Modal } from 'react-bootstrap'; // Import Modal from react-bootstrap
-
+import { Button, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
-export default function OrderHistoryPage() {
+export default function OrderListPage() {
     const navigate = useNavigate();
     const { data: orders, isLoading, error, refetch } = useGetOrderHistoryQuery();
     const { mutateAsync: deleteOrderMutation } = useDeleteOrderMutation();
-    const [showConfirmation, setShowConfirmation] = useState(false); // State to control the visibility of the confirmation modal
-    const [orderIdToDelete, setOrderIdToDelete] = useState(null); // State to store the id of the order to be deleted
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [orderIdToDelete, setOrderIdToDelete] = useState(null);
 
-    const handleDeleteConfirmation = async (orderId:any) => {
+    const handleDeleteConfirmation = async (orderId: any) => {
         setOrderIdToDelete(orderId);
         setShowConfirmation(true);
     };
 
-    const handleDeleteOrder = async (orderId:any) => {
+    const handleDeleteOrder = async (orderId: any) => {
         try {
             await deleteOrderMutation(orderId);
             refetch();
-            setShowConfirmation(false); // Close the confirmation modal after deletion
+            setShowConfirmation(false);
+            toast.success('Order deleted successfully');
         } catch (error) {
             console.error('Error deleting order:', error);
-            toast.error('Failed to delete order. Please try again later.');
+            toast.error(getError(error as ApiError));
         }
     };
 
     return (
         <div>
             <Helmet>
-                <title>Order History</title>
+                <title>Orders</title>
             </Helmet>
-
-            <h1>Order History</h1>
+            <h1>Orders</h1>
             {isLoading ? (
                 <LoadingBox></LoadingBox>
             ) : error ? (
@@ -69,16 +67,17 @@ export default function OrderHistoryPage() {
                                 <Button variant="secondary" type="button" onClick={() => navigate(`/order/${order._id}`)}>
                                     Details
                                 </Button>
-                                <Button className="mx-2" type="button" variant="danger" onClick={() => handleDeleteConfirmation(order._id)}>
-                                    Delete
-                                </Button>
+                                { !order.isPaid && (
+                                    <Button className="mx-2" type="button" variant="danger" onClick={() => handleDeleteConfirmation(order._id)}>
+                                        Delete
+                                    </Button>
+                                )}
                             </td>
                         </tr>
                     ))}
                     </tbody>
                 </table>
             )}
-            {/* Confirmation Modal */}
             <Modal show={showConfirmation} onHide={() => setShowConfirmation(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirm Delete</Modal.Title>
