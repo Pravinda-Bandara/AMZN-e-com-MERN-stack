@@ -10,6 +10,13 @@ export const useGetOrderDetailsQuery = (id: string) =>
         queryFn:async ()=>(await apiClient.get<Order>(`api/orders/${id}`)).data
     })
 
+export const useGetOrderHistoryQuery = () =>
+    useQuery({
+        queryKey: ['order-history'],
+        queryFn: async () =>
+            (await apiClient.get<[Order]>(`/api/orders/mine`)).data,
+    })
+
 export const useCreateOrderMutation = () =>
     useMutation({
         mutationFn: async (order: {
@@ -38,3 +45,26 @@ export const usePayOrderMutation = () =>
                 )
             ).data,
     })
+
+/*export const useDeliverOrderMutation = () =>
+    useMutation({
+        mutationFn: async (orderId: string) =>
+            (
+                await apiClient.put<{ message: string; order: Order }>(
+                    `api/orders/${orderId}/deliver`
+                )
+            ).data,
+    })*/
+
+export const useDeleteOrderMutation = () =>
+    useMutation({
+        mutationFn: async (orderId: string) =>
+            (await apiClient.delete<{ message: string }>(`api/orders/${orderId}`))
+                .data,
+    })
+
+/*export const useGetOrdersQuery = () =>
+    useQuery({
+        queryKey: ['orders'],
+        queryFn: async () => (await apiClient.get<[Order]>(`api/orders`)).data,
+    })*/
