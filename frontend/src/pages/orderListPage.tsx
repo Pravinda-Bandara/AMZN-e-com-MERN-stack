@@ -1,23 +1,30 @@
 import React, { useState } from "react";
-import LoadingBox from "../components/LoadingBox.tsx";
+import { useNavigate } from "react-router-dom";
+import { Button, Modal } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
+import LoadingBox from "../components/LoadingBox.tsx";
 import MessageBox from "../components/MessageBox.tsx";
 import { getError } from "../util.ts";
 import { ApiError } from "../types/ApiError.ts";
-import { useNavigate } from "react-router-dom";
-import { useDeleteOrderMutation, useGetOrdersQuery } from "../hooks/orderHooks.ts";
+import { useDeleteOrderMutation, useDeliverOrderMutation, useGetOrdersQuery } from "../hooks/orderHooks.ts";
 import { toast } from "react-toastify";
-import { Button, Modal } from "react-bootstrap";
 
 export default function OrderListPage() {
     const navigate = useNavigate();
     const { data: orders, isLoading, error, refetch } = useGetOrdersQuery();
     const { mutateAsync: deleteOrderMutation } = useDeleteOrderMutation();
+    const { mutateAsync: deliverOrderMutation } = useDeliverOrderMutation();
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [orderIdToDelete, setOrderIdToDelete] = useState(null);
+    const [orderIdToDeliver, setOrderIdToDeliver] = useState(null);
 
     const handleDeleteConfirmation = async (orderId: any) => {
         setOrderIdToDelete(orderId);
+        setShowConfirmation(true);
+    };
+
+    const handleDeliverConfirmation = async (orderId: any) => {
+        setOrderIdToDeliver(orderId);
         setShowConfirmation(true);
     };
 
@@ -29,6 +36,18 @@ export default function OrderListPage() {
             toast.success("Order deleted successfully");
         } catch (error) {
             console.error("Error deleting order:", error);
+            toast.error(getError(error as ApiError));
+        }
+    };
+
+    const handleDeliverOrder = async (orderId: any) => {
+        try {
+            await deliverOrderMutation(orderId);
+            refetch();
+            setShowConfirmation(false);
+            toast.success("Order delivered successfully");
+        } catch (error) {
+            console.error("Error delivering order:", error);
             toast.error(getError(error as ApiError));
         }
     };
@@ -67,13 +86,36 @@ export default function OrderListPage() {
                                 <td>{order.isPaid ? order.paidAt.substring(0, 10) : "No"}</td>
                                 <td>{order.isDelivered ? order.deliveredAt.substring(0, 10) : "No"}</td>
                                 <td>
-                                    <Button type="button" variant="light" onClick={() => navigate(`/order/${order._id}`)}>
+                                    <Button
+                                        type="button"
+                                        variant="info"
+                                        onClick={() => navigate(`/order/${order._id}`)}
+                                    >
                                         Details
                                     </Button>
                                     &nbsp;
-                                    <Button className="mx-2" type="button" variant="danger" onClick={() => handleDeleteConfirmation(order._id)}>
+                                    <Button
+                                        className="mx-2"
+                                        type="button"
+                                        variant="danger"
+                                        onClick={() => handleDeleteConfirmation(order._id)}
+                                    >
                                         Delete
                                     </Button>
+                                    &nbsp;
+                                    {!order.isDelivered ? (
+                                        <Button
+                                            type="button"
+                                            variant="success"
+                                            onClick={() => handleDeliverConfirmation(order._id)}
+                                        >
+                                           Confirm Deliver
+                                        </Button>
+                                    ) : (
+                                        <Button variant="success" disabled>
+                                            Delivered
+                                        </Button>
+                                    )}
                                 </td>
                             </tr>
                         ))}
@@ -82,15 +124,30 @@ export default function OrderListPage() {
 
                     <Modal show={showConfirmation} onHide={() => setShowConfirmation(false)}>
                         <Modal.Header closeButton>
-                            <Modal.Title>Confirm Delete</Modal.Title>
+                            <Modal.Title>
+                                {orderIdToDelete ? "Confirm Delete" : "Confirm Deliver"}
+                            </Modal.Title>
                         </Modal.Header>
-                        <Modal.Body>Are you sure you want to delete this order?</Modal.Body>
+                        <Modal.Body>
+                            {orderIdToDelete
+                                ? "Are you sure you want to delete this order?"
+                                : "Are you sure you want to mark this order as delivered?"}
+                        </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={() => setShowConfirmation(false)}>
                                 Cancel
                             </Button>
-                            <Button variant="danger" onClick={() => handleDeleteOrder(orderIdToDelete)}>
-                                Delete
+                            <Button
+                                variant={orderIdToDelete ? "danger" : "success"}
+                                onClick={() => {
+                                    if (orderIdToDelete) {
+                                        handleDeleteOrder(orderIdToDelete);
+                                    } else {
+                                        handleDeliverOrder(orderIdToDeliver);
+                                    }
+                                }}
+                            >
+                                {orderIdToDelete ? "Delete" : "Confirm Deliver"}
                             </Button>
                         </Modal.Footer>
                     </Modal>
