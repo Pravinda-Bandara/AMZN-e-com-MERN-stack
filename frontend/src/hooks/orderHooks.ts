@@ -63,8 +63,10 @@ export const useDeleteOrderMutation = () =>
                 .data,
     })
 
-/*export const useGetOrdersQuery = () =>
+
+export const useGetOrdersQuery = () =>
     useQuery({
         queryKey: ['orders'],
         queryFn: async () => (await apiClient.get<[Order]>(`api/orders`)).data,
-    })*/
+    })
+

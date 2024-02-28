@@ -4,6 +4,16 @@ import asyncHandler from "express-async-handler";
 import {OrderModel} from "../models/orderModel.js";
 import {Product} from "../models/productModel.js";
 export const orderRouter=express.Router();
+
+orderRouter.get(
+    '/',
+    isAuth,
+    isAdmin,
+    asyncHandler(async (req: Request, res: Response) => {
+        const orders = await OrderModel.find().populate('user', 'name')
+        res.send(orders)
+    })
+)
 orderRouter.get(
     '/mine',
     isAuth,
