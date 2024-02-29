@@ -29,6 +29,7 @@ import OrderPage from "./pages/orderPage.tsx";
 import OrderHistoryPage from "./pages/orderHistoryPage.tsx";
 import AdminRoute from "./components/AdminRoute.tsx";
 import OrderListPage from "./pages/orderListPage.tsx";
+import UserListPage from "./pages/userListPage.tsx";
 
 
 const router = createBrowserRouter(
@@ -48,6 +49,7 @@ const router = createBrowserRouter(
             </Route>
             <Route path="/admin" element={<AdminRoute />}>
                 <Route path="orders" element={<OrderListPage />} />
+                <Route path="users" element={<UserListPage />} />
             </Route>
 
         </Route>

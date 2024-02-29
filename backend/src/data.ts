@@ -66,4 +66,10 @@ export const  sampleUsers: User[] = [
         password: bcrypt.hashSync('123456'),
         isAdmin: false,
     },
+    {
+        name: 'asd',
+        email: 'asd@example.com',
+        password: bcrypt.hashSync('123456'),
+        isAdmin: false,
+    }
 ]
