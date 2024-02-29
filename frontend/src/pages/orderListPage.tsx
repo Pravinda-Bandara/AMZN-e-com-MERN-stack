@@ -70,7 +70,7 @@ export default function OrderListPage() {
                             <th>ID</th>
                             <th>USER</th>
                             <th>DATE</th>
-                            <th>TOTAL</th>
+                            <th>TOTAL ($)</th>
                             <th>PAID</th>
                             <th>DELIVERED</th>
                             <th>ACTIONS</th>
@@ -103,7 +103,7 @@ export default function OrderListPage() {
                                         Delete
                                     </Button>
                                     &nbsp;
-                                    {!order.isDelivered ? (
+                                    {!order.isDelivered && order.isPaid? (
                                         <Button
                                             type="button"
                                             variant="success"

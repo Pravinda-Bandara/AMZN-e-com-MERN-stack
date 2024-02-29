@@ -152,7 +152,7 @@ export default function OrderPage() {
                                             Confirm Payment
                                         </Button>
                                     ) }
-                                    {userInfo?.isAdmin && !order.isDelivered && (
+                                    {userInfo?.isAdmin && !order.isDelivered && order.isPaid && (
                                         <Button
                                             className="mt-3 mx-2"
                                             onClick={deliverHandler}
