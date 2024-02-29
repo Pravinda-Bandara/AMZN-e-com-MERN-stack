@@ -1,6 +1,7 @@
-import { useMutation } from '@tanstack/react-query'
+import {useMutation, useQuery} from '@tanstack/react-query'
 import apiClient from '../apiClient.ts'
 import { UserInfo } from '../types/UserInfo.ts'
+import {User} from "../types/User.ts";
 
 export const useSigninMutation = () =>
     useMutation({
@@ -40,3 +41,14 @@ export const useSignupMutation = () =>
             ).data,
     })
 
+export const useGetUsersQuery = () =>
+    useQuery({
+        queryKey: ['users'],
+        queryFn: async () => (await apiClient.get<[User]>(`api/users`)).data,
+    })
+
+export const useDeleteUserMutation = () =>
+    useMutation({
+        mutationFn: async (userId: string) =>
+            (await apiClient.delete<{ message: string }>(`api/users/${userId}`)).data,
+    })
