@@ -52,3 +52,24 @@ export const useDeleteUserMutation = () =>
         mutationFn: async (userId: string) =>
             (await apiClient.delete<{ message: string }>(`api/users/${userId}`)).data,
     })
+export const useUpdateUserMutation = () =>
+    useMutation({
+        mutationFn: async (user: {
+            _id: string
+            name: string
+            email: string
+            isAdmin: boolean
+        }) =>
+            (
+                await apiClient.put<{ user: User; message: string }>(
+                    `api/users/${user._id}`,
+                    user
+                )
+            ).data,
+    })
+export const useGetUserDetailsQuery = (userId: string) =>
+    useQuery({
+        queryKey: ['users', userId],
+        queryFn: async () =>
+            (await apiClient.get<User>(`api/users/${userId}`)).data,
+    })
