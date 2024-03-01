@@ -64,7 +64,7 @@ userRouter.post(
     })
 )
 
-userRouter.put(
+userRouter.patch(
     '/:id',
     isAuth,
     isAdmin,

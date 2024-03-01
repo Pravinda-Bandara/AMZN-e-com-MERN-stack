@@ -83,7 +83,7 @@ orderRouter.post(
     })
 )
 
-orderRouter.put(
+orderRouter.patch(
     '/:id/pay',
     isAuth,
     asyncHandler(async (req: Request, res: Response) => {
@@ -102,7 +102,7 @@ orderRouter.put(
     })
 )
 
-orderRouter.put(
+orderRouter.patch(
     '/:id/deliver',
     isAuth,
     isAdmin,

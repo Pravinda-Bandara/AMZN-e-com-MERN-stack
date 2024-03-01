@@ -39,7 +39,7 @@ export const usePayOrderMutation = () =>
     useMutation({
         mutationFn: async (details: { orderId: string }) =>
             (
-                await apiClient.put<{ message: string; order: Order }>(
+                await apiClient.patch<{ message: string; order: Order }>(
                     `api/orders/${details.orderId}/pay`,
                     details
                 )
@@ -50,7 +50,7 @@ export const useDeliverOrderMutation = () =>
     useMutation({
         mutationFn: async (orderId: string) =>
             (
-                await apiClient.put<{ message: string; order: Order }>(
+                await apiClient.patch<{ message: string; order: Order }>(
                     `api/orders/${orderId}/deliver`
                 )
             ).data,

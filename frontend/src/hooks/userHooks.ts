@@ -61,7 +61,7 @@ export const useUpdateUserMutation = () =>
             isAdmin: boolean
         }) =>
             (
-                await apiClient.put<{ user: User; message: string }>(
+                await apiClient.patch<{ user: User; message: string }>(
                     `api/users/${user._id}`,
                     user
                 )
