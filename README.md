@@ -9,11 +9,18 @@ Welcome to the E-Commerce Website using MERN Stack with TypeScript. This e-comme
 
 ### Features
 
+#### User Features
 - **User Authentication:** Users can sign up securely to access personalized features.
 - **Product Cart:** Add products to a cart and manage the items.
 - **Shipping Address:** Provide a shipping address for order delivery.
 - **Payment Method:** Choose a payment method for completing the order.
 - **Order Preview and Confirmation:** Review the order details before confirming the purchase.
+- **Review Order History:** able to Review Order History and check details of the orders.
+
+ #### Admin Features
+- **Manage Orders:** Admin can view and manage orders placed by users.
+- **Manage Products:** Admin can add, edit, and delete products from the inventory.
+- **Manage Users:** Admin can view and manage user accounts.
 
 ### Preview
 #### Product Routes
