@@ -5,7 +5,7 @@
 
 ## Introduction
 
-Welcome to the E-Commerce Website using MERN Stack with TypeScript. This application provides a seamless online shopping experience, allowing users to sign up, add products to a cart, provide shipping address and payment method, and preview and confirm their orders.
+Welcome to the E-Commerce Website using MERN Stack with TypeScript. This e-commerce platform facilitates guest users in product browsing and cart management. Upon signing in, users can provide details, create and subsequently confirm their orders. Admin users possess the authority to manage user accounts, products and orders. The platform incorporates a security system fortified by JSON Web Tokens (JWT).
 
 ### Features
 
@@ -15,17 +15,48 @@ Welcome to the E-Commerce Website using MERN Stack with TypeScript. This applica
 - **Payment Method:** Choose a payment method for completing the order.
 - **Order Preview and Confirmation:** Review the order details before confirming the purchase.
 
-  #### Preview
+### Preview
+#### Product Routes
 
-![Screenshot](./screenshots/0.png)
-![Screenshot](./screenshots/-1.png)
-![Screenshot](./screenshots/1.png)
-![Screenshot](./screenshots/2.png)
-![Screenshot](./screenshots/3.png)
-![Screenshot](./screenshots/4.png)
-![Screenshot](./screenshots/5.png)
-![Screenshot](./screenshots/6.png)
-![Screenshot](./screenshots/7.png)
+<div>
+  <img src="./screenshots/1.png" alt="Screenshot" style="width: 48%;">
+  <img src="./screenshots/2.png" alt="Screenshot" style="width: 48%;">
+</div>
+
+#### User Routes
+<div style="display: flex; justify-content: space-between;">
+  <img src="./screenshots/-1.png" alt="Screenshot" style="width: 48%;">
+  <img src="./screenshots/0.png" alt="Screenshot" style="width: 48%;">
+</div>
+<div style="display: flex; justify-content: space-between;">
+  <img src="./screenshots/8.png" alt="Screenshot" style="width: 48%;">
+</div>
+
+#### Order Routes
+<div style="display: flex; justify-content: space-between;">
+  <img src="./screenshots/3.png" alt="Screenshot" style="width: 48%;">
+  <img src="./screenshots/4.png" alt="Screenshot" style="width: 48%;">
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: flex-start;">
+  <img src="./screenshots/5.png" alt="Screenshot" style="width: 48%;">
+  <img src="./screenshots/6.png" alt="Screenshot" style="width: 48%;">
+</div>
+
+<div style="display: flex; justify-content: space-between; ">
+  <img src="./screenshots/7.png" alt="Screenshot" style="width: 48%;">
+</div>
+
+#### Admin Routes
+<div style="display: flex; justify-content: space-between;">
+  <img src="./screenshots/9.png" alt="Screenshot" style="width: 48%; align-self: flex-start;">
+  <img src="./screenshots/10.png" alt="Screenshot" style="width: 48%; align-self: flex-start;">
+</div>
+
+
+<div style="display: flex; justify-content: space-between;">
+  <img src="./screenshots/11.png" alt="Screenshot" style="width: 48%;">
+</div>
 
 ### Technologies Used
 
