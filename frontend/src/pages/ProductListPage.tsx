@@ -135,14 +135,14 @@ export default function ProductListPage() {
                     </table>
 
                     {/* Pagination */}
-                    <div>
+                    <div >
                         {[...Array(data!.pages).keys()].map((x) => (
                             <Link
                                 className={x + 1 === Number(data!.page) ? 'btn text-bold' : 'btn'}
                                 key={x + 1}
                                 to={`/admin/products?page=${x + 1}`}
                             >
-                                {x + 1}
+                                <Button>{x + 1}</Button>
                             </Link>
                         ))}
                     </div>
