@@ -1,4 +1,4 @@
-import {useQuery} from "@tanstack/react-query";
+import {useMutation, useQuery} from "@tanstack/react-query";
 import apiClient from "../apiClient.ts";
 import {Product} from "../types/Product.ts";
 
@@ -15,3 +15,30 @@ export const useGetProductDetailsBySlugQuery = (slug: string) =>
             (await apiClient.get<Product>(`api/products/slug/${slug}`)).data,})
 
 
+export const useGetAdminProdcutsQuery = (page: number) =>
+    useQuery({
+            queryKey: ['admin-products', page],
+            queryFn: async () =>
+                (
+                    await apiClient.get<{
+                            products: [Product]
+                            page: number
+                            pages: number
+                    }>(`/api/products/admin?page=${page}`)
+                ).data,
+    })
+
+export const useCreateProductMutation = () =>
+    useMutation({
+            mutationFn: async () =>
+                (
+                    await apiClient.post<{ product: Product; message: string }>(
+                        `api/products`
+                    )
+                ).data,
+    })
+export const useDeleteProductMutation = () =>
+    useMutation({
+            mutationFn: async (productId: string) =>
+                (await apiClient.delete(`api/products/${productId}`)).data,
+    })
