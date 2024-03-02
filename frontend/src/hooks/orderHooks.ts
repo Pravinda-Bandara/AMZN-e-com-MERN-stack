@@ -2,6 +2,7 @@ import {useMutation, useQuery} from "@tanstack/react-query";
 import {CartItem, ShippingAddress} from "../types/CartItem.ts";
 import apiClient from "../apiClient.ts";
 import {Order} from "../types/Order.ts";
+import {Product} from "../types/Product.ts";
 
 
 export const useGetOrderDetailsQuery = (id: string) =>
@@ -70,3 +71,9 @@ export const useGetOrdersQuery = () =>
         queryFn: async () => (await apiClient.get<[Order]>(`api/orders`)).data,
     })
 
+export const useGetProductDetailsQuery = (id: string) =>
+    useQuery({
+        queryKey: ['products', id],
+        queryFn: async () =>
+            (await apiClient.get<Product>(`api/products/${id}`)).data,
+    })
