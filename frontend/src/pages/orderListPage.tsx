@@ -109,7 +109,7 @@ export default function OrderListPage() {
                                             variant="success"
                                             onClick={() => handleDeliverConfirmation(order._id)}
                                         >
-                                           Confirm Deliver
+                                            Confirm Delivery
                                         </Button>
                                     ) : (
                                         <Button variant="success" disabled>
@@ -125,7 +125,7 @@ export default function OrderListPage() {
                     <Modal show={showConfirmation} onHide={() => setShowConfirmation(false)}>
                         <Modal.Header closeButton>
                             <Modal.Title>
-                                {orderIdToDelete ? "Confirm Delete" : "Confirm Deliver"}
+                                {orderIdToDelete ? "Confirm Delete" : "Confirm Delivery"}
                             </Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
@@ -147,7 +147,7 @@ export default function OrderListPage() {
                                     }
                                 }}
                             >
-                                {orderIdToDelete ? "Delete" : "Confirm Deliver"}
+                                {orderIdToDelete ? "Delete" : "Confirm Delivery"}
                             </Button>
                         </Modal.Footer>
                     </Modal>

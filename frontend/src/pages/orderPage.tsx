@@ -158,7 +158,7 @@ export default function OrderPage() {
                                             onClick={deliverHandler}
                                             disabled={loadingDeliver}
                                         >
-                                            {loadingDeliver ? "Delivering..." : "Confirm Deliver"}
+                                            {loadingDeliver ? "Delivering..." : "Confirm Delivery"}
                                         </Button>
                                     )}
                                 </ListGroup.Item>
