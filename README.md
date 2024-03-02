@@ -23,46 +23,46 @@ Welcome to the E-Commerce Website using MERN Stack with TypeScript. This e-comme
 - **Manage Users:** Admin can view and manage user accounts.
 
 ### Preview
-#### Product Routes
+### Product Routes
 
 <div>
-  <img src="./screenshots/1.png" alt="Screenshot" style="width: 48%;">
-  <img src="./screenshots/2.png" alt="Screenshot" style="width: 48%;">
+  <img src="./screenshots/1.png" alt="Screenshot" >
+  <img src="./screenshots/2.png" alt="Screenshot" >
 </div>
 
-#### User Routes
+### User Routes
 <div style="display: flex; justify-content: space-between;">
-  <img src="./screenshots/-1.png" alt="Screenshot" style="width: 48%;">
-  <img src="./screenshots/0.png" alt="Screenshot" style="width: 48%;">
+  <img src="./screenshots/-1.png" alt="Screenshot" >
+  <img src="./screenshots/0.png" alt="Screenshot" >
 </div>
-<div style="display: flex; justify-content: space-between;">
-  <img src="./screenshots/8.png" alt="Screenshot" style="width: 48%;">
+<div style="display: flex; justify-content: >
+  <img src="./screenshots/8.png" alt="Screenshot" >
 </div>
 
-#### Order Routes
+### Order Routes
 <div style="display: flex; justify-content: space-between;">
-  <img src="./screenshots/3.png" alt="Screenshot" style="width: 48%;">
-  <img src="./screenshots/4.png" alt="Screenshot" style="width: 48%;">
+  <img src="./screenshots/3.png" alt="Screenshot">
+  <img src="./screenshots/4.png" alt="Screenshot">
 </div>
 
 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-  <img src="./screenshots/5.png" alt="Screenshot" style="width: 48%;">
-  <img src="./screenshots/6.png" alt="Screenshot" style="width: 48%;">
+  <img src="./screenshots/5.png" alt="Screenshot">
+  <img src="./screenshots/6.png" alt="Screenshot">
 </div>
 
 <div style="display: flex; justify-content: space-between; ">
-  <img src="./screenshots/7.png" alt="Screenshot" style="width: 48%;">
+  <img src="./screenshots/7.png" alt="Screenshot">
 </div>
 
-#### Admin Routes
+### Admin Routes
 <div style="display: flex; justify-content: space-between;">
-  <img src="./screenshots/9.png" alt="Screenshot" style="width: 48%; align-self: flex-start;">
-  <img src="./screenshots/10.png" alt="Screenshot" style="width: 48%; align-self: flex-start;">
+  <img src="./screenshots/9.png" alt="Screenshot">
+  <img src="./screenshots/10.png" alt="Screenshot">
 </div>
 
 
 <div style="display: flex; justify-content: space-between;">
-  <img src="./screenshots/11.png" alt="Screenshot" style="width: 48%;">
+  <img src="./screenshots/11.png" alt="Screenshot">
 </div>
 
 ### Technologies Used
