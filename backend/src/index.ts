@@ -11,7 +11,7 @@ const app = express();
 dotenv.config()
 
 const MONGODB_URI =
-    process.env.MONGODB_URI || 'mongodb://localhost/tsmernamazona'
+    process.env.MONGODB_LOCAL_URI || 'mongodb://localhost/tsmernamazona'
 mongoose.set('strictQuery', true)
 mongoose
     .connect(MONGODB_URI)
