@@ -112,17 +112,26 @@ export const useDeleteProductMutation = () =>
     });
 
 // Fetch product categories
-export const useGetCategoriesQuery = () =>
+export const useGetCategoriesQuery = (brand?: string) =>
     useQuery<string[], Error>({
-        queryKey: ["categories"],
-        queryFn: async () =>
-            (await apiClient.get<string[]>(`api/products/categories`)).data,
+        queryKey: ['categories', brand],
+        queryFn: async () => {
+            const response = await apiClient.get<string[]>(
+                `/api/products/categories${brand ? `?brand=${brand}` : ''}`
+            );
+            return response.data;
+        },
     });
 
+
 // Fetch product brands
-export const useGetBrandsQuery = () =>
+export const useGetBrandsQuery = (category?: string) =>
     useQuery<string[], Error>({
-        queryKey: ["brands"],
-        queryFn: async () =>
-            (await apiClient.get<string[]>(`api/products/brands`)).data,
+        queryKey: ['brands', category],
+        queryFn: async () => {
+            const response = await apiClient.get<string[]>(
+                `/api/products/brands${category ? `?category=${category}` : ''}`
+            );
+            return response.data;
+        },
     });

@@ -10,14 +10,14 @@ import { useState } from "react";
 
 export function HomePage() {
     // State for filters and pagination
-    const [name, setName] = useState<string>("");
-    const [category, setCategory] = useState<string>("");
-    const [brand, setBrand] = useState<string>("");
-    const [sort, setSort] = useState<string>("latest");
+    const [name, setName] = useState<string>('');
+    const [category, setCategory] = useState<string>('');
+    const [brand, setBrand] = useState<string>('');
+    const [sort, setSort] = useState<string>('latest');
     const [page, setPage] = useState<number>(1);
-    const [pageSize, setPageSize] = useState<number>(8); // Default page size
+    const [pageSize, setPageSize] = useState<number>(8);
 
-    // Fetch products using the query hook
+    // Fetch products
     const { data, isLoading, error } = useGetProductsQuery({
         searchQuery: name,
         category,
@@ -27,9 +27,9 @@ export function HomePage() {
         pageSize,
     });
 
-    // Fetch categories and brands for filtering
-    const { data: categories, isLoading: loadingCategories } = useGetCategoriesQuery();
-    const { data: brands, isLoading: loadingBrands } = useGetBrandsQuery();
+    // Fetch dynamic categories and brands
+    const { data: categories, isLoading: loadingCategories } = useGetCategoriesQuery(brand);
+    const { data: brands, isLoading: loadingBrands } = useGetBrandsQuery(category);
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -41,7 +41,6 @@ export function HomePage() {
             <Helmet>
                 <title>TS Amazona</title>
             </Helmet>
-
             <Row className="mb-3">
                 {/* Search and Filter Form */}
                 <Col md={12}>

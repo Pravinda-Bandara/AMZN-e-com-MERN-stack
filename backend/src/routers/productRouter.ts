@@ -67,16 +67,25 @@ productRouter.get(
 productRouter.get(
     '/categories',
     asyncHandler(async (req: Request, res: Response) => {
-        const categories = await ProductModel.distinct('category');
-        res.send(categories);
+        const brand = req.query.brand || ''; // Optional query param
+        const match: Record<string, unknown> = {};
+        if (brand) match.brand = brand;
+
+        const categories = await ProductModel.find(match).distinct('category');
+        res.json(categories);
     })
 );
+
 
 productRouter.get(
     '/brands',
     asyncHandler(async (req: Request, res: Response) => {
-        const brands = await ProductModel.distinct('brand');
-        res.send(brands);
+        const category = req.query.category || ''; // Optional query param
+        const match: Record<string, unknown> = {};
+        if (category) match.category = category;
+
+        const brands = await ProductModel.find(match).distinct('brand');
+        res.json(brands);
     })
 );
 
