@@ -9,50 +9,77 @@ productRouter.get(
     '/',
     asyncHandler(async (req: Request, res: Response) => {
         const {
-            query: { name, category, brand, min, max, rating, sort, page, pageSize },
-        } = req
+            page = 1,
+            pageSize = 10,
+            category = '',
+            brand = '',
+            searchQuery = '',
+            sort = '',
+        } = req.query;
 
-        const pageNumber = Number(page) || 1
-        const pageLimit = Number(pageSize) || 10
+        const pageNumber = Number(page);
+        const limit = Number(pageSize);
+        const skip = limit * (pageNumber - 1);
 
-        // Filtering criteria
-        const filter: any = {}
-        if (name) filter.name = { $regex: name, $options: 'i' } // Case-insensitive search
-        if (category) filter.category = category
-        if (brand) filter.brand = brand
-        if (min !== undefined || max !== undefined) {
-            filter.price = {
-                ...(min && { $gte: Number(min) }),
-                ...(max && { $lte: Number(max) }),
+        const query: any = {};
+        if (category) query.category = category;
+        if (brand) query.brand = brand;
+        if (searchQuery) {
+            query.name = { $regex: searchQuery, $options: 'i' }; // Case-insensitive regex search
+        }
+
+        let sortOrder = {};
+        if (sort) {
+            switch (sort) {
+                case 'lowest':
+                    sortOrder = { price: 1 };
+                    break;
+                case 'highest':
+                    sortOrder = { price: -1 };
+                    break;
+                case 'toprated':
+                    sortOrder = { rating: -1 };
+                    break;
+                case 'newest':
+                    sortOrder = { createdAt: -1 };
+                    break;
+                default:
+                    sortOrder = {};
             }
         }
-        if (rating) filter.rating = { $gte: Number(rating) }
 
-        // Sorting
-        let sortOption: any = {}
-        if (sort) {
-            if (sort === 'lowest') sortOption.price = 1
-            else if (sort === 'highest') sortOption.price = -1
-            else if (sort === 'toprated') sortOption.rating = -1
-            else sortOption._id = -1 // Default sort: latest
-        }
+        const products = await ProductModel.find(query)
+            .sort(sortOrder)
+            .skip(skip)
+            .limit(limit);
 
-        // Retrieve data with filtering, sorting, and pagination
-        const products = await ProductModel.find(filter)
-            .sort(sortOption)
-            .skip(pageLimit * (pageNumber - 1))
-            .limit(pageLimit)
-
-        const countProducts = await ProductModel.countDocuments(filter)
+        const countProducts = await ProductModel.countDocuments(query);
 
         res.send({
             products,
             countProducts,
             page: pageNumber,
-            pages: Math.ceil(countProducts / pageLimit),
-        })
+            pages: Math.ceil(countProducts / limit),
+        });
     })
-)
+);
+
+productRouter.get(
+    '/categories',
+    asyncHandler(async (req: Request, res: Response) => {
+        const categories = await ProductModel.distinct('category');
+        res.send(categories);
+    })
+);
+
+productRouter.get(
+    '/brands',
+    asyncHandler(async (req: Request, res: Response) => {
+        const brands = await ProductModel.distinct('brand');
+        res.send(brands);
+    })
+);
+
 
 
 

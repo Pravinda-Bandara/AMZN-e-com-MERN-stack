@@ -1,50 +1,84 @@
-import { Col, Row, Form, Button } from "react-bootstrap"
-import MessageBox from "../components/MessageBox.tsx"
-import LoadingBox from "../components/LoadingBox.tsx"
-import ProductItem from "../components/ProductItem.tsx"
-import { Helmet } from "react-helmet-async"
-import { useGetProductsQuery } from "../hooks/productHooks.ts"
-import { getError } from "../util.ts"
-import { ApiError } from "../types/ApiError.ts"
-import { useState } from "react"
+import { Col, Row, Form, Button } from "react-bootstrap";
+import MessageBox from "../components/MessageBox.tsx";
+import LoadingBox from "../components/LoadingBox.tsx";
+import ProductItem from "../components/ProductItem.tsx";
+import { Helmet } from "react-helmet-async";
+import { useGetProductsQuery, useGetCategoriesQuery, useGetBrandsQuery } from "../hooks/productHooks.ts";
+import { getError } from "../util.ts";
+import { ApiError } from "../types/ApiError.ts";
+import { useState } from "react";
 
 export function HomePage() {
     // State for filters and pagination
-    const [name, setName] = useState<string>("")
-    const [category, setCategory] = useState<string>("")
-    const [sort, setSort] = useState<string>("latest")
-    const [page, setPage] = useState<number>(1)
-    const [pageSize, setPageSize] = useState<number>(8) // Default page size
+    const [name, setName] = useState<string>("");
+    const [category, setCategory] = useState<string>("");
+    const [brand, setBrand] = useState<string>("");
+    const [sort, setSort] = useState<string>("latest");
+    const [page, setPage] = useState<number>(1);
+    const [pageSize, setPageSize] = useState<number>(8); // Default page size
 
     // Fetch products using the query hook
     const { data, isLoading, error } = useGetProductsQuery({
-        name,
+        searchQuery: name,
         category,
+        brand,
         sort,
         page,
         pageSize,
-    })
+    });
+
+    // Fetch categories and brands for filtering
+    const { data: categories, isLoading: loadingCategories } = useGetCategoriesQuery();
+    const { data: brands, isLoading: loadingBrands } = useGetBrandsQuery();
 
     const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault()
-        setPage(1) // Reset to the first page on search
-    }
+        e.preventDefault();
+        setPage(1); // Reset to the first page on search
+    };
 
     return (
         <div>
             <Helmet>
                 <title>TS Amazona</title>
             </Helmet>
+
             <Row className="mb-3">
                 {/* Search and Filter Form */}
-                <Col md={6}>
-                    <Form onSubmit={handleSearch} className="d-flex gap-2">
+                <Col md={12}>
+                    <Form onSubmit={handleSearch} className="d-flex flex-wrap gap-3">
                         <Form.Control
                             type="text"
                             placeholder="Search products..."
                             value={name}
                             onChange={(e) => setName(e.target.value)}
+                            className="flex-grow-1"
                         />
+                        <Form.Control
+                            as="select"
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            disabled={loadingCategories}
+                        >
+                            <option value="">All Categories</option>
+                            {categories?.map((cat) => (
+                                <option key={cat} value={cat}>
+                                    {cat}
+                                </option>
+                            ))}
+                        </Form.Control>
+                        <Form.Control
+                            as="select"
+                            value={brand}
+                            onChange={(e) => setBrand(e.target.value)}
+                            disabled={loadingBrands}
+                        >
+                            <option value="">All Brands</option>
+                            {brands?.map((br) => (
+                                <option key={br} value={br}>
+                                    {br}
+                                </option>
+                            ))}
+                        </Form.Control>
                         <Form.Control
                             as="select"
                             value={sort}
@@ -61,6 +95,7 @@ export function HomePage() {
                     </Form>
                 </Col>
             </Row>
+
             {isLoading ? (
                 <LoadingBox />
             ) : error ? (
@@ -97,5 +132,5 @@ export function HomePage() {
                 </div>
             )}
         </div>
-    )
+    );
 }
