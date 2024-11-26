@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
     useCreateProductMutation,
     useDeleteProductMutation,
-    useGetAdminProdcutsQuery,
+    useGetAdminProductsQuery,
 } from '../hooks/productHooks.ts';
 import { toast } from 'react-toastify';
 import { getError } from '../util.ts';
@@ -18,7 +18,7 @@ export default function ProductListPage() {
     const sp = new URLSearchParams(search);
     const page = Number(sp.get('page') || 1);
 
-    const { data, isLoading, error, refetch } = useGetAdminProdcutsQuery(page);
+    const { data, isLoading, error, refetch } = useGetAdminProductsQuery(page);
 
     const { mutateAsync: createProduct, isPending: loadingCreate } = useCreateProductMutation();
 
