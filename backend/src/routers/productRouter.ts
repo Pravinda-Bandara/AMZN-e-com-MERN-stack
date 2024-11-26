@@ -3,16 +3,57 @@ import asyncHandler from 'express-async-handler'
 import {Product, ProductModel} from "../models/productModel.js";
 import {isAdmin, isAuth} from "../utils.js";
 
-const PAGE_SIZE = 3
 export const productRouter = express.Router()
 // /api/products
 productRouter.get(
     '/',
-    asyncHandler(async (req, res) => {
-        const products = await ProductModel.find()
-        res.json(products)
+    asyncHandler(async (req: Request, res: Response) => {
+        const {
+            query: { name, category, brand, min, max, rating, sort, page, pageSize },
+        } = req
+
+        const pageNumber = Number(page) || 1
+        const pageLimit = Number(pageSize) || 10
+
+        // Filtering criteria
+        const filter: any = {}
+        if (name) filter.name = { $regex: name, $options: 'i' } // Case-insensitive search
+        if (category) filter.category = category
+        if (brand) filter.brand = brand
+        if (min !== undefined || max !== undefined) {
+            filter.price = {
+                ...(min && { $gte: Number(min) }),
+                ...(max && { $lte: Number(max) }),
+            }
+        }
+        if (rating) filter.rating = { $gte: Number(rating) }
+
+        // Sorting
+        let sortOption: any = {}
+        if (sort) {
+            if (sort === 'lowest') sortOption.price = 1
+            else if (sort === 'highest') sortOption.price = -1
+            else if (sort === 'toprated') sortOption.rating = -1
+            else sortOption._id = -1 // Default sort: latest
+        }
+
+        // Retrieve data with filtering, sorting, and pagination
+        const products = await ProductModel.find(filter)
+            .sort(sortOption)
+            .skip(pageLimit * (pageNumber - 1))
+            .limit(pageLimit)
+
+        const countProducts = await ProductModel.countDocuments(filter)
+
+        res.send({
+            products,
+            countProducts,
+            page: pageNumber,
+            pages: Math.ceil(countProducts / pageLimit),
+        })
     })
 )
+
 
 
 // /api/slug/tshirt
