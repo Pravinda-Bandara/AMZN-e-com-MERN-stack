@@ -12,7 +12,6 @@ export default function CartPage() {
 
     const {
         state: {
-            mode,
             cart: { cartItems },
         },
         dispatch,
@@ -20,8 +19,8 @@ export default function CartPage() {
 
     const updateCartHandler = (item: CartItem, quantity: number) => {
         if (item.countInStock < quantity) {
-            toast.warn('Sorry. Product is out of stock',{
-                autoClose:1000
+            toast.warn('Sorry. Product is out of stock', {
+                autoClose: 1000,
             })
             return
         }
@@ -67,14 +66,14 @@ export default function CartPage() {
                                                 onClick={() =>
                                                     updateCartHandler(item, item.quantity - 1)
                                                 }
-                                                variant={mode}
+                                                variant="light"
                                                 disabled={item.quantity === 1}
                                             >
                                                 <i className="fas fa-minus-circle"></i>
                                             </Button>{' '}
                                             <span>{item.quantity}</span>
                                             <Button
-                                                variant={mode}
+                                                variant="light"
                                                 onClick={() =>
                                                     updateCartHandler(item, item.quantity + 1)
                                                 }
@@ -87,7 +86,7 @@ export default function CartPage() {
                                         <Col md={2}>
                                             <Button
                                                 onClick={() => removeItemHandler(item)}
-                                                variant={mode}
+                                                variant="light"
                                             >
                                                 <i className="fas fa-trash"></i>
                                             </Button>

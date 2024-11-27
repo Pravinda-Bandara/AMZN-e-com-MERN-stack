@@ -1,36 +1,26 @@
-import {Badge, Button, Col, Container, ListGroup, Nav, Navbar, NavDropdown, Row} from "react-bootstrap";
-import {Link, Outlet} from "react-router-dom";
-import React, {useContext, useEffect} from "react";
-import {Store} from "./Store.tsx";
-import {ToastContainer} from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css'
-import {LinkContainer} from "react-router-bootstrap";
-
+import { Badge, Button, Col, Container, ListGroup, Nav, Navbar, NavDropdown, Row } from "react-bootstrap";
+import { Link, Outlet } from "react-router-dom";
+import React, { useContext } from "react";
+import { Store } from "./Store.tsx";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { LinkContainer } from "react-router-bootstrap";
 
 function App() {
     const {
-        state: { mode, cart, userInfo },
+        state: { cart, userInfo },
         dispatch,
-    } = useContext(Store)
+    } = useContext(Store);
 
-    useEffect(() => {
-        document.body.setAttribute('data-bs-theme', mode)
-    }, [mode])
-
-    const switchModeHandler = () => {
-        dispatch({ type: 'SWITCH_MODE' })
-    }
     const signoutHandler = () => {
         // @ts-ignore
-        dispatch({ type: 'USER_SIGNOUT' })
-        localStorage.removeItem('userInfo')
-        localStorage.removeItem('cartItems')
-        localStorage.removeItem('shippingAddress')
-        localStorage.removeItem('paymentMethod')
-        window.location.href = '/signin'
-    }
-
-
+        dispatch({ type: 'USER_SIGNOUT' });
+        localStorage.removeItem('userInfo');
+        localStorage.removeItem('cartItems');
+        localStorage.removeItem('shippingAddress');
+        localStorage.removeItem('paymentMethod');
+        window.location.href = '/signin';
+    };
 
     return (
         <div className="d-flex flex-column vh-100">
@@ -48,17 +38,6 @@ function App() {
                         </LinkContainer>
                         <Navbar.Collapse>
                             <Nav className="w-100 justify-content-end">
-                                <Link
-                                    to="#"
-                                    className="nav-link header-link"
-                                    onClick={switchModeHandler}
-                                >
-                                    <i
-                                        className={mode === 'light' ? 'fa fa-sun' : 'fa fa-moon'}
-                                    ></i>{' '}
-                                    {mode === 'light' ? 'Light' : 'Dark'}
-                                </Link>
-
                                 {userInfo ? (
                                     <NavDropdown
                                         className="header-link"
@@ -81,7 +60,7 @@ function App() {
                                         </Link>
                                     </NavDropdown>
                                 ) : (
-                                    <NavDropdown className="header-link" title={`sign in`}>
+                                    <NavDropdown className="header-link" title={`Sign In`}>
                                         <LinkContainer to="/signin">
                                             <NavDropdown.Item>Sign In</NavDropdown.Item>
                                         </LinkContainer>
@@ -93,8 +72,8 @@ function App() {
                                 <Link to="/cart" className="nav-link header-link p-0">
                                     {
                                         <span className="cart-badge">
-                      {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                    </span>
+                                            {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                                        </span>
                                     }
                                     <svg
                                         fill="#ffffff"
@@ -109,7 +88,6 @@ function App() {
                             </Nav>
                         </Navbar.Collapse>
                     </div>
-
                 </Navbar>
             </header>
             <main>
@@ -117,10 +95,9 @@ function App() {
                     <Outlet />
                 </Container>
             </main>
-            <footer>
-            </footer>
+            <footer></footer>
         </div>
-    )
+    );
 }
 
-export default App
+export default App;
