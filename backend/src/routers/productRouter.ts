@@ -24,8 +24,10 @@ productRouter.get(
         const query: any = {};
         if (category) query.category = category;
         if (brand) {
-            const brandsArray = brand.split(',');
-            query.brand = { $in: brandsArray }; // Logical OR for multiple brands
+            if (typeof brand === 'string') {
+                const brandsArray = brand.split(',');
+                query.brand = { $in: brandsArray }; // Logical OR for multiple brands
+            }
         }
         if (searchQuery) {
             query.$or = [
