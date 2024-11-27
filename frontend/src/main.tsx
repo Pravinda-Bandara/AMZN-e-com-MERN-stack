@@ -1,37 +1,36 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { HelmetProvider } from "react-helmet-async";
 import {
     createBrowserRouter,
     createRoutesFromElements,
     Route,
     RouterProvider,
 } from "react-router-dom";
-import {HelmetProvider} from "react-helmet-async";
-import 'bootstrap/dist/css/bootstrap.min.css'
-import App from './App.tsx'
-import './index.css'
-import {HomePage} from "./pages/HomePage.tsx";
+import App from './App.tsx';
+import './index.css';
+import { HomePage } from "./pages/HomePage/HomePage.tsx";
 
 
 
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
-import ProductPage from "./pages/ProductPage.tsx";
-import {StoreProvider} from "./Store.tsx";
-import CartPage from "./pages/CartPage.tsx";
-import SigninPage from "./pages/SigninPage.tsx";
-import SignupPage from "./pages/SignupPage.tsx";
-import ShippingAddressPage from "./pages/ShippingAddressPage.tsx";
-import PaymentMethodPage from "./pages/PaymentMethodPage.tsx";
-import {ProtectedRoute} from "./components/ProtectedRoute.tsx";
-import PlaceOrderPage from "./pages/PlaceOrderPage.tsx";
-import OrderPage from "./pages/orderPage.tsx";
-import OrderHistoryPage from "./pages/orderHistoryPage.tsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { StoreProvider } from "./Store.tsx";
 import AdminRoute from "./components/AdminRoute.tsx";
-import OrderListPage from "./pages/orderListPage.tsx";
-import UserListPage from "./pages/userListPage.tsx";
-import UserEditPage from "./pages/UserEditPage.tsx";
-import ProductListPage from "./pages/ProductListPage.tsx";
+import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
+import CartPage from "./pages/CartPage/CartPage.tsx";
+import OrderHistoryPage from "./pages/OrderHistoryPage/orderHistoryPage.tsx";
+import OrderListPage from "./pages/OrderListPage/orderListPage.tsx";
+import OrderPage from "./pages/OrderPage/orderPage.tsx";
+import PaymentMethodPage from "./pages/PaymentMethodPage/PaymentMethodPage.tsx";
+import PlaceOrderPage from "./pages/PlaceOrderPage/PlaceOrderPage.tsx";
+import ProductListPage from "./pages/ProductListPage/ProductListPage.tsx";
+import ProductPage from "./pages/ProductPage/ProductPage.tsx";
+import ShippingAddressPage from "./pages/ShippingAddressPage/ShippingAddressPage.tsx";
+import SigninPage from "./pages/SigninPage/SigninPage.tsx";
+import SignupPage from "./pages/SignupPage/SignupPage.tsx";
+import UserEditPage from "./pages/UserEditPage/UserEditPage.tsx";
+import UserListPage from "./pages/UserListPage/userListPage.tsx";
 
 
 const router = createBrowserRouter(

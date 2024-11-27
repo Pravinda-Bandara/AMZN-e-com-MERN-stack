@@ -1,32 +1,40 @@
-import {EventHandler, useContext, useEffect, useState} from 'react'
-import { Button, Container, Form } from 'react-bootstrap'
-import { Helmet } from 'react-helmet-async'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import LoadingBox from '../components/LoadingBox.tsx'
-import { useSigninMutation } from '../hooks/userHooks.ts'
-import { Store } from '../Store.tsx'
-import { ApiError } from '../types/ApiError.ts'
-import { getError } from '../util.ts'
+import React, { useContext, useEffect, useState } from "react";
+import { Button, Container, Form } from "react-bootstrap";
+import { Helmet } from "react-helmet-async";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { Store } from "../../Store.tsx";
+import { useSignupMutation } from "../../hooks/userHooks.ts";
+import { ApiError } from "../../types/ApiError.ts";
+import { getError } from "../../util.ts";
 
-export default function SigninPage() {
+export default function SignupPage() {
     const navigate = useNavigate()
     const { search } = useLocation()
     const redirectInUrl = new URLSearchParams(search).get('redirect')
     const redirect = redirectInUrl ? redirectInUrl : '/'
 
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
 
     const { state, dispatch } = useContext(Store)
     const { userInfo } = state
 
-    const { mutateAsync: signin, isPending } = useSigninMutation()
+    const { mutateAsync: signup, isPending } = useSignupMutation()
 
     const submitHandler = async (e: React.SyntheticEvent) => {
         e.preventDefault()
+        if (password !== confirmPassword) {
+            toast.error('Passwords do not match',{
+                autoClose:1000
+            })
+            return
+        }
         try {
-            const data = await signin({
+            const data = await signup({
+                name,
                 email,
                 password,
             })
@@ -39,20 +47,7 @@ export default function SigninPage() {
             })
         }
     }
-/*    const submitHandler: EventHandler<React.FormEvent> = async (e) => {
-        e.preventDefault();
-        try {
-            const data = await signin({
-                email,
-                password,
-            });
-            dispatch({ type: 'USER_SIGNIN', payload: data });
-            localStorage.setItem('userInfo', JSON.stringify(data));
-            navigate(redirect);
-        } catch (err) {
-            toast.error(getError(err as ApiError));
-        }
-    };*/
+
     useEffect(() => {
         if (userInfo) {
             navigate(redirect)
@@ -62,10 +57,15 @@ export default function SigninPage() {
     return (
         <Container className="small-container">
             <Helmet>
-                <title>Sign In</title>
+                <title>Sign Up</title>
             </Helmet>
-            <h1 className="my-3">Sign In</h1>
+            <h1 className="my-3">Sign Up</h1>
             <Form onSubmit={submitHandler}>
+                <Form.Group className="mb-3" controlId="name">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control onChange={(e) => setName(e.target.value)} required />
+                </Form.Group>
+
                 <Form.Group className="mb-3" controlId="email">
                     <Form.Label>Email</Form.Label>
                     <Form.Control
@@ -81,18 +81,25 @@ export default function SigninPage() {
                         required
                         onChange={(e) => setPassword(e.target.value)}
                     />
+
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="confirmPassword">
+                    <Form.Label>Confirm Password</Form.Label>
+                    <Form.Control
+                        type="password"
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
+                    />
                 </Form.Group>
                 <div className="mb-3">
-                    <Button disabled={isPending} type="submit">
-                        Sign In
-                    </Button>
-                    {isPending && <LoadingBox />}
+                    <Button type="submit">Sign Up</Button>
                 </div>
                 <div className="mb-3">
-                    New customer?{' '}
-                    <Link to={`/signup?redirect=${redirect}`}>Create your account</Link>
+                    Already have an account?{' '}
+                    <Link to={`/signin?redirect=${redirect}`}>Sign-In</Link>
                 </div>
             </Form>
         </Container>
     )
 }
+

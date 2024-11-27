@@ -1,13 +1,13 @@
-import {useNavigate, useParams} from "react-router-dom";
-import React, {useEffect, useState} from "react";
-import {useGetUserDetailsQuery, useUpdateUserMutation} from "../hooks/userHooks.ts";
-import {toast} from "react-toastify";
-import {getError} from "../util.ts";
-import {ApiError} from "../types/ApiError.ts";
-import {Helmet} from "react-helmet-async";
-import LoadingBox from "../components/LoadingBox.tsx";
-import {Button, Container, Form} from "react-bootstrap";
-import MessageBox from "../components/MessageBox.tsx";
+import React, { useEffect, useState } from "react";
+import { Button, Container, Form } from "react-bootstrap";
+import { Helmet } from "react-helmet-async";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import LoadingBox from "../../components/LoadingBox.tsx";
+import MessageBox from "../../components/MessageBox.tsx";
+import { useGetUserDetailsQuery, useUpdateUserMutation } from "../../hooks/userHooks.ts";
+import { ApiError } from "../../types/ApiError.ts";
+import { getError } from "../../util.ts";
 
 export default function UserEditPage() {
     const params = useParams()

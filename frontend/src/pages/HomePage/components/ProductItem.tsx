@@ -1,12 +1,12 @@
-import {Product} from "../types/Product.ts";
-import {Button, Card} from "react-bootstrap";
-import {Link} from "react-router-dom";
-import Rating from "./Rating.tsx";
-import {Store} from "../Store.tsx";
-import {useContext} from "react";
-import {CartItem} from "../types/CartItem.ts";
-import {convertProductToCartItem} from "../util.ts";
-import {toast} from "react-toastify";
+import { useContext } from "react";
+import { Button, Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import Rating from "../../../components/Rating.tsx";
+import { Store } from "../../../Store.tsx";
+import { CartItem } from "../../../types/CartItem.ts";
+import { Product } from "../../../types/Product.ts";
+import { convertProductToCartItem } from "../../../util.ts";
 
 export function ProductItem({product}:{product:Product}) {
     const {state,dispatch} =useContext(Store);

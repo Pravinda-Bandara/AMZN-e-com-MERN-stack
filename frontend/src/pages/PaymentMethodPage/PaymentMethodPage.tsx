@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import React, {useContext, useEffect, useState} from "react";
-import {Store} from "../Store.tsx";
-import CheckoutSteps from "../components/CheckoutSteps.tsx";
+import {Store} from "../../Store.tsx";
+import CheckoutSteps from "../../components/CheckoutSteps.tsx";
 import {Helmet} from "react-helmet-async";
 import {Button, Form} from "react-bootstrap";
 
