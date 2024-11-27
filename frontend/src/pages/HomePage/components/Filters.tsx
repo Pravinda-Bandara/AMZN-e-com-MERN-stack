@@ -20,11 +20,11 @@ export function Filters({ sort, setSort, brand, setBrand, brands }: FiltersProps
 
     return (
         <div>
-            <h5>Filters</h5>
+            <h5 className="h5">Filters</h5>
 
             {/* Sorting */}
             <Form.Group>
-                <Form.Label>Sort By</Form.Label>
+                <Form.Label className="h6">Sort By</Form.Label>
                 <Form.Control
                     as="select"
                     value={sort}
@@ -39,7 +39,7 @@ export function Filters({ sort, setSort, brand, setBrand, brands }: FiltersProps
             </Form.Group>
 
             {/* Brand Filters (Checkbox Matrix) */}
-            <h6 className="mt-4">Select Brands</h6>
+            <h6 className="mt-4 h6">Select Brands</h6>
             <Form>
                 {brands?.map((br) => (
                     <Form.Check
