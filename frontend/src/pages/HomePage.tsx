@@ -1,4 +1,4 @@
-import { Col, Row, Form, Button } from "react-bootstrap";
+import { Col, Row, Form, Button, Nav } from "react-bootstrap";
 import MessageBox from "../components/MessageBox.tsx";
 import LoadingBox from "../components/LoadingBox.tsx";
 import ProductItem from "../components/ProductItem.tsx";
@@ -12,7 +12,7 @@ export function HomePage() {
     // State for filters and pagination
     const [name, setName] = useState<string>('');
     const [category, setCategory] = useState<string>('');
-    const [brand, setBrand] = useState<string>('');
+    const [brand, setBrand] = useState<string[]>([]); // Multiple brands
     const [sort, setSort] = useState<string>('latest');
     const [page, setPage] = useState<number>(1);
     const [pageSize, setPageSize] = useState<number>(8);
@@ -21,14 +21,14 @@ export function HomePage() {
     const { data, isLoading, error } = useGetProductsQuery({
         searchQuery: name,
         category,
-        brand,
+        brand: brand.join(','), // Pass as comma-separated string
         sort,
         page,
         pageSize,
     });
 
     // Fetch dynamic categories and brands
-    const { data: categories, isLoading: loadingCategories } = useGetCategoriesQuery(brand);
+    const { data: categories, isLoading: loadingCategories } = useGetCategoriesQuery(brand.join(','));
     const { data: brands, isLoading: loadingBrands } = useGetBrandsQuery(category);
 
     const handleSearch = (e: React.FormEvent) => {
@@ -36,48 +36,30 @@ export function HomePage() {
         setPage(1); // Reset to the first page on search
     };
 
+    // Handle brand selection (checkboxes)
+    const handleBrandChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedBrand = e.target.value;
+        setBrand((prev) =>
+            prev.includes(selectedBrand)
+                ? prev.filter((brand) => brand !== selectedBrand)
+                : [...prev, selectedBrand]
+        );
+    };
+
     return (
         <div>
             <Helmet>
-                <title>TS Amazona</title>
+                <title>Amazona</title>
             </Helmet>
+
             <Row className="mb-3">
-                {/* Search and Filter Form */}
-                <Col md={12}>
-                    <Form onSubmit={handleSearch} className="d-flex flex-wrap gap-3">
-                        <Form.Control
-                            type="text"
-                            placeholder="Search products..."
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="flex-grow-1"
-                        />
-                        <Form.Control
-                            as="select"
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value)}
-                            disabled={loadingCategories}
-                        >
-                            <option value="">All Categories</option>
-                            {categories?.map((cat) => (
-                                <option key={cat} value={cat}>
-                                    {cat}
-                                </option>
-                            ))}
-                        </Form.Control>
-                        <Form.Control
-                            as="select"
-                            value={brand}
-                            onChange={(e) => setBrand(e.target.value)}
-                            disabled={loadingBrands}
-                        >
-                            <option value="">All Brands</option>
-                            {brands?.map((br) => (
-                                <option key={br} value={br}>
-                                    {br}
-                                </option>
-                            ))}
-                        </Form.Control>
+                {/* Sidebar - Filters (Brand and Sorting) */}
+                <Col md={3} className="bg-light p-3">
+                    <h5>Filters</h5>
+
+                    {/* Sorting */}
+                    <Form.Group>
+                        <Form.Label>Sort By</Form.Label>
                         <Form.Control
                             as="select"
                             value={sort}
@@ -88,48 +70,110 @@ export function HomePage() {
                             <option value="highest">Price: High to Low</option>
                             <option value="toprated">Top Rated</option>
                         </Form.Control>
-                        <Button type="submit" variant="primary">
-                            Search
-                        </Button>
+                    </Form.Group>
+
+                    {/* Brand Filters (Checkbox Matrix) */}
+                    <h6 className="mt-4">Select Brands</h6>
+                    <Form>
+                        {brands?.map((br) => (
+                            <Form.Check
+                                key={br}
+                                type="checkbox"
+                                id={`brand-${br}`}
+                                label={br}
+                                value={br}
+                                checked={brand.includes(br)}
+                                onChange={handleBrandChange}
+                            />
+                        ))}
                     </Form>
                 </Col>
-            </Row>
 
-            {isLoading ? (
-                <LoadingBox />
-            ) : error ? (
-                <MessageBox variant="danger">{getError(error as unknown as ApiError)}</MessageBox>
-            ) : (
-                <div>
-                    <Row>
-                        {data!.products.map((product) => (
-                            <Col key={product.slug} sm={6} md={4} lg={3}>
-                                <ProductItem product={product} />
-                            </Col>
+                {/* Main Content - Product List */}
+                <Col md={9}>
+                    {/* Category Tabs */}
+                    <Nav
+                        className="mb-3"
+                        activeKey={category}
+                        onSelect={(selectedCategory) => setCategory(selectedCategory)}
+                        style={{ backgroundColor: '#f8f9fa', padding: '10px', borderRadius: '10px' }} // Gray background and rounded corners
+                    >
+                        <Nav.Item>
+                            <Nav.Link
+                                eventKey=""
+                                className={`rounded-pill ${category === '' ? 'bg-secondary text-white' : 'text-dark'}`} // Active state style
+                            >
+                                All Categories
+                            </Nav.Link>
+                        </Nav.Item>
+                        {categories?.map((cat) => (
+                            <Nav.Item key={cat}>
+                                <Nav.Link
+                                    eventKey={cat}
+                                    className={`rounded-pill ${category === cat ? 'bg-secondary text-white' : 'text-dark'}`} // Active state style
+                                >
+                                    {cat}
+                                </Nav.Link>
+                            </Nav.Item>
                         ))}
+                    </Nav>
+
+                    {/* Search and Filter Form */}
+                    <Row className="mb-3">
+                        <Col md={12}>
+                            <Form onSubmit={handleSearch} className="d-flex flex-wrap gap-3">
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Search products..."
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    className="flex-grow-1"
+                                />
+                                <Button type="submit" variant="primary">
+                                    Search
+                                </Button>
+                            </Form>
+                        </Col>
                     </Row>
-                    <div className="d-flex justify-content-between align-items-center mt-3">
-                        {/* Pagination */}
-                        <Button
-                            variant="secondary"
-                            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-                            disabled={page === 1}
-                        >
-                            Previous
-                        </Button>
-                        <span>
-                            Page {data!.page} of {data!.pages}
-                        </span>
-                        <Button
-                            variant="secondary"
-                            onClick={() => setPage((prev) => Math.min(prev + 1, data!.pages))}
-                            disabled={page === data!.pages}
-                        >
-                            Next
-                        </Button>
-                    </div>
-                </div>
-            )}
+
+                    {/* Product List */}
+                    {isLoading ? (
+                        <LoadingBox />
+                    ) : error ? (
+                        <MessageBox variant="danger">{getError(error as unknown as ApiError)}</MessageBox>
+                    ) : (
+                        <div>
+                            <Row>
+                                {data!.products.map((product) => (
+                                    <Col key={product.slug} sm={6} md={4} lg={3}>
+                                        <ProductItem product={product} />
+                                    </Col>
+                                ))}
+                            </Row>
+                            <div className="d-flex justify-content-between align-items-center mt-3">
+                                {/* Pagination */}
+                                <Button
+                                    variant="secondary"
+                                    onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                                    disabled={page === 1}
+                                >
+                                    Previous
+                                </Button>
+                                <span>
+                                    Page {data!.page} of {data!.pages}
+                                </span>
+                                <Button
+                                    variant="secondary"
+                                    onClick={() => setPage((prev) => Math.min(prev + 1, data!.pages))}
+                                    disabled={page === data!.pages}
+                                >
+                                    Next
+                                </Button>
+                            </div>
+                        </div>
+                    )}
+                </Col>
+            </Row>
         </div>
     );
 }

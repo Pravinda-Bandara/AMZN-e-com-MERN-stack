@@ -37,12 +37,12 @@ function App() {
             <ToastContainer position="bottom-center" limit={1} />
             <header>
                 <Navbar
-                    className="d-flex flex-column align-items-stretch p-2 pb-0 mb-3"
+                    className="d-flex flex-column align-items-stretch mb-3"
                     bg="dark"
                     variant="dark"
                     expand="lg"
                 >
-                    <div className="d-flex justify-content-between align-items-center">
+                    <div className="d-flex justify-content-between align-items-center px-4">
                         <LinkContainer to="/" className="header-link">
                             <Navbar.Brand>AMZN</Navbar.Brand>
                         </LinkContainer>

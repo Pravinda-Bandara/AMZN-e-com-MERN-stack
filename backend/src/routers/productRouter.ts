@@ -67,11 +67,8 @@ productRouter.get(
 productRouter.get(
     '/categories',
     asyncHandler(async (req: Request, res: Response) => {
-        const brand = req.query.brand || ''; // Optional query param
-        const match: Record<string, unknown> = {};
-        if (brand) match.brand = brand;
-
-        const categories = await ProductModel.find(match).distinct('category');
+        // No need for the brand filter anymore
+        const categories = await ProductModel.find().distinct('category');
         res.json(categories);
     })
 );
