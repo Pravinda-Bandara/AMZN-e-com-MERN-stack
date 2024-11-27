@@ -28,7 +28,11 @@ productRouter.get(
             query.brand = { $in: brandsArray }; // Logical OR for multiple brands
         }
         if (searchQuery) {
-            query.name = { $regex: searchQuery, $options: 'i' }; // Case-insensitive regex search
+            query.$or = [
+                { name: { $regex: searchQuery, $options: 'i' } }, // Search in name
+                { brand: { $regex: searchQuery, $options: 'i' } }, // Search in brand
+                { category: { $regex: searchQuery, $options: 'i' } }, // Search in category
+            ];
         }
 
         let sortOrder = {};
