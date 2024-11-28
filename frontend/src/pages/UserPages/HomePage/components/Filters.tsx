@@ -6,10 +6,10 @@ interface FiltersProps {
     brand: string[];
     setBrand: React.Dispatch<React.SetStateAction<string[]>>;
     brands: string[];
-    minPrice: number;
-    setMinPrice: React.Dispatch<React.SetStateAction<number>>;
-    maxPrice: number;
-    setMaxPrice: React.Dispatch<React.SetStateAction<number>>;
+    minPrice: number | null; // Changed to allow null for no price filter
+    setMinPrice: React.Dispatch<React.SetStateAction<number | null>>; // Accept null
+    maxPrice: number | null; // Changed to allow null for no price filter
+    setMaxPrice: React.Dispatch<React.SetStateAction<number | null>>; // Accept null
 }
 
 export function Filters({
@@ -30,6 +30,34 @@ export function Filters({
                 ? prev.filter((brand) => brand !== selectedBrand)
                 : [...prev, selectedBrand]
         );
+    };
+
+    const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+
+        // Set to null if the field is empty, otherwise parse it as a number
+        if (value === "") {
+            setMinPrice(null); // No minimum price set
+        } else {
+            const numericValue = Number(value);
+            if (!isNaN(numericValue)) {
+                setMinPrice(numericValue); // Valid number, set state
+            }
+        }
+    };
+
+    const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+
+        // Set to null if the field is empty, otherwise parse it as a number
+        if (value === "") {
+            setMaxPrice(null); // No maximum price set
+        } else {
+            const numericValue = Number(value);
+            if (!isNaN(numericValue)) {
+                setMaxPrice(numericValue); // Valid number, set state
+            }
+        }
     };
 
     return (
@@ -76,8 +104,8 @@ export function Filters({
                     <span className="input-group-text">$</span>
                     <Form.Control
                         type="text" // Use text to remove the spinner arrows
-                        value={minPrice}
-                        onChange={(e) => setMinPrice(Number(e.target.value))}
+                        value={minPrice === null ? "" : minPrice} // Display empty if null
+                        onChange={handleMinPriceChange}
                         placeholder="Enter minimum price"
                         className="bg-light text-dark"
                     />
@@ -90,8 +118,8 @@ export function Filters({
                     <span className="input-group-text">$</span>
                     <Form.Control
                         type="text" // Use text to remove the spinner arrows
-                        value={maxPrice}
-                        onChange={(e) => setMaxPrice(Number(e.target.value))}
+                        value={maxPrice === null ? "" : maxPrice} // Display empty if null
+                        onChange={handleMaxPriceChange}
                         placeholder="Enter maximum price"
                         className="bg-light text-dark"
                     />

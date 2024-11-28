@@ -91,8 +91,8 @@ productRouter.get(
 productRouter.get(
     '/brands',
     asyncHandler(async (req: Request, res: Response) => {
-      // Extract category and searchQuery from request query parameters
-      const { category = '', searchQuery = '' }: { category?: string; searchQuery?: string } = req.query;
+      // Extract category, searchQuery, minPrice, and maxPrice from request query parameters
+      const { category = '', searchQuery = '', minPrice = 0, maxPrice = Infinity }: { category?: string; searchQuery?: string; minPrice?: number; maxPrice?: number } = req.query;
   
       try {
         // Build the filter criteria
@@ -109,6 +109,11 @@ productRouter.get(
             { name: { $regex: new RegExp(searchQuery, 'i') } },
             { category: { $regex: new RegExp(searchQuery, 'i') } },
           ];
+        }
+  
+        // Adding price range filter
+        if (minPrice && maxPrice !== Infinity) {
+          filterCriteria.price = { $gte: minPrice, $lte: maxPrice };
         }
   
         // Fetch products matching the criteria
@@ -128,7 +133,7 @@ productRouter.get(
       }
     })
   );
-
+  
 
 
 
