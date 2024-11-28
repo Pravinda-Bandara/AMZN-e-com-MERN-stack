@@ -86,14 +86,43 @@ productRouter.get(
 productRouter.get(
     '/brands',
     asyncHandler(async (req: Request, res: Response) => {
-        const category = req.query.category || ''; // Optional query param
-        const match: Record<string, unknown> = {};
-        if (category) match.category = category;
-
-        const brands = await ProductModel.find(match).distinct('brand');
-        res.json(brands);
+      // Extract category and searchQuery from request query parameters
+      const { category = '', searchQuery = '' }: { category?: string; searchQuery?: string } = req.query;
+  
+      try {
+        // Build the filter criteria
+        const filterCriteria: any = {};
+  
+        // Case-insensitive search for category
+        if (category && typeof category === 'string') {
+          filterCriteria.category = { $regex: new RegExp(category, 'i') };
+        }
+  
+        // Search for searchQuery in name or category (partially matching)
+        if (searchQuery && typeof searchQuery === 'string') {
+          filterCriteria.$or = [
+            { name: { $regex: new RegExp(searchQuery, 'i') } },
+            { category: { $regex: new RegExp(searchQuery, 'i') } },
+          ];
+        }
+  
+        // Fetch products matching the criteria
+        const products = await ProductModel.find(filterCriteria)
+          .select('brand')
+          .distinct('brand')
+          .exec();
+  
+        // Return the unique brands
+        res.json(products);
+      } catch (error) {
+        // Catch and handle any errors
+        res.status(500).json({
+          message: 'Error fetching brands',
+          error: (error as Error).message,
+        });
+      }
     })
-);
+  );
 
 
 

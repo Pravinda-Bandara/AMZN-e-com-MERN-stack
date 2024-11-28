@@ -125,13 +125,17 @@ export const useGetCategoriesQuery = (brand?: string) =>
 
 
 // Fetch product brands
-export const useGetBrandsQuery = (category?: string) =>
+export const useGetBrandsQuery = (category: string, searchQuery: string) =>
     useQuery<string[], Error>({
-        queryKey: ['brands', category],
+        queryKey: ['brands', { category, searchQuery }], // Cache based on category and searchQuery
         queryFn: async () => {
-            const response = await apiClient.get<string[]>(
-                `/api/products/brands${category ? `?category=${category}` : ''}`
-            );
+            const params = new URLSearchParams();
+            if (category) params.append('category', category);
+            if (searchQuery) params.append('searchQuery', searchQuery);
+
+            const response = await apiClient.get<string[]>(`/api/products/brands?${params.toString()}`);
             return response.data;
         },
+        keepPreviousData: true, // Maintain old data during fetching
     });
+
