@@ -6,9 +6,23 @@ interface FiltersProps {
     brand: string[];
     setBrand: React.Dispatch<React.SetStateAction<string[]>>;
     brands: string[];
+    minPrice: number;
+    setMinPrice: React.Dispatch<React.SetStateAction<number>>;
+    maxPrice: number;
+    setMaxPrice: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export function Filters({ sort, setSort, brand, setBrand, brands }: FiltersProps) {
+export function Filters({
+    sort,
+    setSort,
+    brand,
+    setBrand,
+    brands,
+    minPrice,
+    setMinPrice,
+    maxPrice,
+    setMaxPrice,
+}: FiltersProps) {
     const handleBrandChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedBrand = e.target.value;
         setBrand((prev) =>
@@ -53,6 +67,36 @@ export function Filters({ sort, setSort, brand, setBrand, brands }: FiltersProps
                     />
                 ))}
             </Form>
+
+            {/* Price Range Filters */}
+            <h6 className="mt-4 h6">Price Range</h6>
+            <Form.Group>
+                <Form.Label>Min Price</Form.Label>
+                <div className="input-group">
+                    <span className="input-group-text">$</span>
+                    <Form.Control
+                        type="text" // Use text to remove the spinner arrows
+                        value={minPrice}
+                        onChange={(e) => setMinPrice(Number(e.target.value))}
+                        placeholder="Enter minimum price"
+                        className="bg-light text-dark"
+                    />
+                </div>
+            </Form.Group>
+
+            <Form.Group>
+                <Form.Label>Max Price</Form.Label>
+                <div className="input-group">
+                    <span className="input-group-text">$</span>
+                    <Form.Control
+                        type="text" // Use text to remove the spinner arrows
+                        value={maxPrice}
+                        onChange={(e) => setMaxPrice(Number(e.target.value))}
+                        placeholder="Enter maximum price"
+                        className="bg-light text-dark"
+                    />
+                </div>
+            </Form.Group>
         </div>
     );
 }

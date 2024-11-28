@@ -15,6 +15,8 @@ productRouter.get(
             brand = '',
             searchQuery = '',
             sort = '',
+            minPrice = 0,   // New parameter for minimum price
+            maxPrice = Infinity, // New parameter for maximum price
         } = req.query;
 
         const pageNumber = Number(page);
@@ -36,6 +38,9 @@ productRouter.get(
                 { category: { $regex: searchQuery, $options: 'i' } }, // Search in category
             ];
         }
+        // Adding price range filters
+        if (minPrice) query.price = { ...query.price, $gte: Number(minPrice) };
+        if (maxPrice !== Infinity) query.price = { ...query.price, $lte: Number(maxPrice) };
 
         let sortOrder = {};
         if (sort) {

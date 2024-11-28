@@ -22,7 +22,6 @@ type GetProductsResponse = {
     pages: number;
 };
 
-// Fetch products with sorting, filtering, and pagination
 export const useGetProductsQuery = (options: GetProductsQueryOptions) => {
     const {
         searchQuery,
@@ -54,23 +53,24 @@ export const useGetProductsQuery = (options: GetProductsQueryOptions) => {
         queryFn: async () => {
             const params = new URLSearchParams();
 
+            // Appending query parameters only if they are defined
             if (searchQuery) params.append("searchQuery", searchQuery);
             if (category) params.append("category", category);
             if (brand) params.append("brand", brand);
-            if (minPrice !== undefined) params.append("min", minPrice.toString());
-            if (maxPrice !== undefined) params.append("max", maxPrice.toString());
+            if (minPrice !== undefined && minPrice !== null) params.append("minPrice", minPrice.toString());
+            if (maxPrice !== undefined && maxPrice !== null) params.append("maxPrice", maxPrice.toString());
             if (rating !== undefined) params.append("rating", rating.toString());
             if (sort) params.append("sort", sort);
             if (page) params.append("page", page.toString());
             if (pageSize) params.append("pageSize", pageSize.toString());
 
-            const response = await apiClient.get<GetProductsResponse>(
-                `api/products?${params.toString()}`
-            );
+            // Making the API request
+            const response = await apiClient.get<GetProductsResponse>(`api/products?${params.toString()}`);
             return response.data;
         },
     });
 };
+
 
 // Fetch product details by slug
 export const useGetProductDetailsBySlugQuery = (slug: string) =>

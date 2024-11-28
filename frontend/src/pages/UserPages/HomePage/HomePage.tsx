@@ -11,8 +11,6 @@ import { Categories } from "./components/Categories.tsx";
 import { ProductList } from "./components/ProductList.tsx";
 import { SearchSection } from "./components/SearchSection.tsx";
 
-
-
 export function HomePage() {
   // State for filters and pagination
   const [searchInput, setSearchInput] = useState<string>(''); // For user input
@@ -22,6 +20,10 @@ export function HomePage() {
   const [sort, setSort] = useState<string>('latest');
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(8);
+  
+  // State for min and max price range
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(Infinity);
 
   // Fetch products
   const { data, isLoading, error } = useGetProductsQuery({
@@ -31,6 +33,8 @@ export function HomePage() {
     sort,
     page,
     pageSize,
+    minPrice,
+    maxPrice,
   });
 
   // Fetch dynamic categories and brands
@@ -58,6 +62,10 @@ export function HomePage() {
             brand={brand}
             setBrand={setBrand}
             brands={brands || []}
+            minPrice={minPrice}
+            setMinPrice={setMinPrice}
+            maxPrice={maxPrice}
+            setMaxPrice={setMaxPrice}
           />
         </Col>
 
