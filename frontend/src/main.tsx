@@ -10,34 +10,33 @@ import {
 } from "react-router-dom";
 import App from './App.tsx';
 import './index.css';
-import { HomePage } from "./pages/HomePage/HomePage.tsx";
+import { HomePage } from "./pages/UserPages/HomePage/HomePage.tsx";
 
 
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StoreProvider } from "./Store.tsx";
-import AdminRoute from "./components/AdminRoute.tsx";
 import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
-import CartPage from "./pages/CartPage/CartPage.tsx";
-import OrderHistoryPage from "./pages/OrderHistoryPage/orderHistoryPage.tsx";
-import OrderListPage from "./pages/OrderListPage/orderListPage.tsx";
-import OrderPage from "./pages/OrderPage/orderPage.tsx";
-import PaymentMethodPage from "./pages/PaymentMethodPage/PaymentMethodPage.tsx";
-import PlaceOrderPage from "./pages/PlaceOrderPage/PlaceOrderPage.tsx";
-import ProductListPage from "./pages/ProductListPage/ProductListPage.tsx";
-import ProductPage from "./pages/ProductPage/ProductPage.tsx";
-import ShippingAddressPage from "./pages/ShippingAddressPage/ShippingAddressPage.tsx";
-import SigninPage from "./pages/SigninPage/SigninPage.tsx";
-import SignupPage from "./pages/SignupPage/SignupPage.tsx";
-import UserEditPage from "./pages/UserEditPage/UserEditPage.tsx";
-import UserListPage from "./pages/UserListPage/userListPage.tsx";
+import AdminDashboard from './pages/AdminPages/AdminDashboard/AdminDashboard.tsx';
+import CartPage from "./pages/UserPages/CartPage/CartPage.tsx";
+import OrderHistoryPage from "./pages/UserPages/OrderHistoryPage/orderHistoryPage.tsx";
+import OrderListPage from "./pages/AdminPages/OrderListPage/orderListPage.tsx";
+import OrderPage from "./pages/AdminPages/OrderPage/orderPage.tsx";
+import PaymentMethodPage from "./pages/UserPages/PaymentMethodPage/PaymentMethodPage.tsx";
+import PlaceOrderPage from "./pages/UserPages/PlaceOrderPage/PlaceOrderPage.tsx";
+import ProductListPage from "./pages/AdminPages/ProductListPage/ProductListPage.tsx";
+import ProductPage from "./pages/UserPages/ProductPage/ProductPage.tsx";
+import ShippingAddressPage from "./pages/UserPages/ShippingAddressPage/ShippingAddressPage.tsx";
+import SigninPage from "./pages/UserPages/SigninPage/SigninPage.tsx";
+import UserListPage from "./pages/AdminPages/UserListPage/userListPage.tsx";
+import SignupPage from "./pages/UserPages/SignupPage/SignupPage.tsx";
 
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<App />}>
-            <Route index={true} element={<HomePage/>}/>
-            <Route path="product/:slug" element={<ProductPage/>}/>
+            <Route index={true} element={<HomePage />} />
+            <Route path="product/:slug" element={<ProductPage />} />
             <Route path="signin" element={<SigninPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/cart" element={<CartPage />} />
@@ -48,10 +47,9 @@ const router = createBrowserRouter(
                 <Route path="/placeorder" element={<PlaceOrderPage />} />
                 <Route path="/order/:id" element={<OrderPage />} />
             </Route>
-            <Route path="/admin" element={<AdminRoute />}>
+            <Route path="/admin" element={<AdminDashboard />}>
                 <Route path="orders" element={<OrderListPage />} />
                 <Route path="users" element={<UserListPage />} />
-                <Route path="user/:id" element={<UserEditPage />} />
                 <Route path="products" element={<ProductListPage />} />
             </Route>
 
@@ -61,13 +59,13 @@ const router = createBrowserRouter(
 
 const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-      <StoreProvider>
-          <HelmetProvider>
-              <QueryClientProvider client={queryClient}>
-                  <RouterProvider router={router} />
-              </QueryClientProvider>
-          </HelmetProvider>
-      </StoreProvider>
-  </React.StrictMode>,
+    <React.StrictMode>
+        <StoreProvider>
+            <HelmetProvider>
+                <QueryClientProvider client={queryClient}>
+                    <RouterProvider router={router} />
+                </QueryClientProvider>
+            </HelmetProvider>
+        </StoreProvider>
+    </React.StrictMode>,
 )
