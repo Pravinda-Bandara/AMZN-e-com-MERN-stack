@@ -24,12 +24,13 @@ import OrderListPage from "./pages/AdminPages/OrderListPage/orderListPage.tsx";
 import OrderPage from "./pages/AdminPages/OrderPage/orderPage.tsx";
 import PaymentMethodPage from "./pages/UserPages/PaymentMethodPage/PaymentMethodPage.tsx";
 import PlaceOrderPage from "./pages/UserPages/PlaceOrderPage/PlaceOrderPage.tsx";
-import ProductListPage from "./pages/AdminPages/ProductListPage/ProductListPage.tsx";
 import ProductPage from "./pages/UserPages/ProductPage/ProductPage.tsx";
 import ShippingAddressPage from "./pages/UserPages/ShippingAddressPage/ShippingAddressPage.tsx";
 import SigninPage from "./pages/UserPages/SigninPage/SigninPage.tsx";
 import UserListPage from "./pages/AdminPages/UserListPage/userListPage.tsx";
 import SignupPage from "./pages/UserPages/SignupPage/SignupPage.tsx";
+import { ProductListPage1 } from './pages/AdminPages/ProductListPage1/ProductListPage1.tsx';
+import ProductPageAdmin from './pages/AdminPages/ProductPage/ProductPageAdmin.tsx';
 
 
 const router = createBrowserRouter(
@@ -50,7 +51,8 @@ const router = createBrowserRouter(
             <Route path="/admin" element={<AdminDashboard />}>
                 <Route path="orders" element={<OrderListPage />} />
                 <Route path="users" element={<UserListPage />} />
-                <Route path="products" element={<ProductListPage />} />
+                <Route path="products" element={<ProductListPage1 />} />
+                <Route path="product/:slug" element={<ProductPageAdmin />} />
             </Route>
 
         </Route>
