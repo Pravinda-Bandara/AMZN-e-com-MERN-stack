@@ -71,7 +71,7 @@ export function Filters({
                     as="select"
                     value={sort}
                     onChange={(e) => setSort(e.target.value)}
-                    className="bg-light text-dark"
+                    className="bg-light text-dark no-focus-outline"
                 >
                     <option value="latest">Latest</option>
                     <option value="lowest">Price: Low to High</option>
@@ -80,21 +80,25 @@ export function Filters({
                 </Form.Control>
             </Form.Group>
 
-            {/* Brand Filters (Checkbox Matrix) */}
-            <h6 className="mt-4 h6">Select Brands</h6>
-            <Form>
-                {brands?.map((br) => (
-                    <Form.Check
-                        key={br}
-                        type="checkbox"
-                        id={`brand-${br}`}
-                        label={br}
-                        value={br}
-                        checked={brand.includes(br)}
-                        onChange={handleBrandChange}
-                    />
-                ))}
-            </Form>
+            {/* Conditional Rendering for Brand Filters */}
+            {brands?.length > 0 && (
+                <>
+                    <h6 className="mt-4 h6">Select Brands</h6>
+                    <Form>
+                        {brands.map((br) => (
+                            <Form.Check
+                                key={br}
+                                type="checkbox"
+                                id={`brand-${br}`}
+                                label={br}
+                                value={br}
+                                checked={brand.includes(br)}
+                                onChange={handleBrandChange}
+                            />
+                        ))}
+                    </Form>
+                </>
+            )}
 
             {/* Price Range Filters */}
             <h6 className="mt-4 h6">Price Range</h6>
@@ -107,7 +111,7 @@ export function Filters({
                         value={minPrice === null ? "" : minPrice} // Display empty if null
                         onChange={handleMinPriceChange}
                         placeholder="Enter minimum price"
-                        className="bg-light text-dark"
+                        className="bg-light text-dark no-focus-outline"
                     />
                 </div>
             </Form.Group>
@@ -121,7 +125,7 @@ export function Filters({
                         value={maxPrice === null ? "" : maxPrice} // Display empty if null
                         onChange={handleMaxPriceChange}
                         placeholder="Enter maximum price"
-                        className="bg-light text-dark"
+                        className="bg-light text-dark no-focus-outline"
                     />
                 </div>
             </Form.Group>

@@ -125,15 +125,15 @@ export const useGetCategoriesQuery = (brand?: string) =>
 
 
 // Fetch product brands
-export const useGetBrandsQuery = (category: string, searchQuery: string, minPrice: number, maxPrice: number) =>
+export const useGetBrandsQuery = (category: string, searchQuery: string, minPrice: number | null, maxPrice: number | null) =>
     useQuery<string[], Error>({
         queryKey: ['brands', { category, searchQuery, minPrice, maxPrice }], // Cache based on all filter criteria
         queryFn: async () => {
             const params = new URLSearchParams();
             if (category) params.append('category', category);
             if (searchQuery) params.append('searchQuery', searchQuery);
-            if (minPrice !== undefined) params.append('minPrice', minPrice.toString());
-            if (maxPrice !== undefined) params.append('maxPrice', maxPrice.toString());
+            if (minPrice !== null) params.append('minPrice', minPrice.toString()); // Check for null
+            if (maxPrice !== null) params.append('maxPrice', maxPrice.toString()); // Check for null
 
             const response = await apiClient.get<string[]>(`/api/products/brands?${params.toString()}`);
             return response.data;

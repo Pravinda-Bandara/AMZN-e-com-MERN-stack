@@ -140,3 +140,9 @@ button.side-navbar-user:hover {
 .cart-shake {
   animation: shake 0.5s ease-in-out;
 }
+
+.no-focus-outline:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25); /* Light blue shadow */
+  border-color: #80bdff; /* Custom border color */
+}

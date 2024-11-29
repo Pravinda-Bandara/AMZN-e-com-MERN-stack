@@ -1,4 +1,4 @@
-import { Form, Button, Col, Row } from "react-bootstrap";
+import { Form, Button, Col, Row, InputGroup } from "react-bootstrap";
 
 interface SearchSectionProps {
     name: string;
@@ -10,17 +10,19 @@ export function SearchSection({ name, setName, handleSearch }: SearchSectionProp
     return (
         <Row className="mb-3">
             <Col md={12}>
-                <Form onSubmit={handleSearch} className="d-flex flex-wrap gap-3">
-                    <Form.Control
-                        type="text"
-                        placeholder="Search products..."
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="flex-grow-1 bg-light text-dark"
-                    />
-                    <Button type="submit" variant="primary">
-                        Search
-                    </Button>
+                <Form onSubmit={handleSearch}>
+                    <InputGroup>
+                        <Form.Control
+                            type="text"
+                            placeholder="Search products..."
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="bg-light text-dark no-focus-outline"
+                        />
+                        <Button type="submit" variant="primary">
+                            Search
+                        </Button>
+                    </InputGroup>
                 </Form>
             </Col>
         </Row>
