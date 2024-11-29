@@ -1,4 +1,5 @@
-import { Form } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
+import { useState } from "react";
 
 interface FiltersProps {
     sort: string;
@@ -6,10 +7,16 @@ interface FiltersProps {
     brand: string[];
     setBrand: React.Dispatch<React.SetStateAction<string[]>>;
     brands: string[];
-    minPrice: number | null; // Changed to allow null for no price filter
-    setMinPrice: React.Dispatch<React.SetStateAction<number | null>>; // Accept null
-    maxPrice: number | null; // Changed to allow null for no price filter
-    setMaxPrice: React.Dispatch<React.SetStateAction<number | null>>; // Accept null
+    minPrice: number | null;
+    setMinPrice: React.Dispatch<React.SetStateAction<number | null>>;
+    maxPrice: number | null;
+    setMaxPrice: React.Dispatch<React.SetStateAction<number | null>>;
+    onApplyFilters: (filters: {
+        sort: string;
+        brand: string[];
+        minPrice: number | null;
+        maxPrice: number | null;
+    }) => void; // Pass filters to parent on apply
 }
 
 export function Filters({
@@ -22,10 +29,17 @@ export function Filters({
     setMinPrice,
     maxPrice,
     setMaxPrice,
+    onApplyFilters,
 }: FiltersProps) {
+    // Local state to hold filter changes before applying
+    const [localSort, setLocalSort] = useState(sort);
+    const [localBrand, setLocalBrand] = useState(brand);
+    const [localMinPrice, setLocalMinPrice] = useState(minPrice);
+    const [localMaxPrice, setLocalMaxPrice] = useState(maxPrice);
+
     const handleBrandChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedBrand = e.target.value;
-        setBrand((prev) =>
+        setLocalBrand((prev) =>
             prev.includes(selectedBrand)
                 ? prev.filter((brand) => brand !== selectedBrand)
                 : [...prev, selectedBrand]
@@ -34,30 +48,36 @@ export function Filters({
 
     const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-
-        // Set to null if the field is empty, otherwise parse it as a number
         if (value === "") {
-            setMinPrice(null); // No minimum price set
+            setLocalMinPrice(null);
         } else {
             const numericValue = Number(value);
             if (!isNaN(numericValue)) {
-                setMinPrice(numericValue); // Valid number, set state
+                setLocalMinPrice(numericValue);
             }
         }
     };
 
     const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-
-        // Set to null if the field is empty, otherwise parse it as a number
         if (value === "") {
-            setMaxPrice(null); // No maximum price set
+            setLocalMaxPrice(null);
         } else {
             const numericValue = Number(value);
             if (!isNaN(numericValue)) {
-                setMaxPrice(numericValue); // Valid number, set state
+                setLocalMaxPrice(numericValue);
             }
         }
+    };
+
+    // Apply filters when the button is clicked
+    const handleApplyFilters = () => {
+        onApplyFilters({
+            sort: localSort,
+            brand: localBrand,
+            minPrice: localMinPrice,
+            maxPrice: localMaxPrice,
+        });
     };
 
     return (
@@ -69,8 +89,8 @@ export function Filters({
                 <Form.Label className="h6">Sort By</Form.Label>
                 <Form.Control
                     as="select"
-                    value={sort}
-                    onChange={(e) => setSort(e.target.value)}
+                    value={localSort}
+                    onChange={(e) => setLocalSort(e.target.value)}
                     className="bg-light text-dark no-focus-outline"
                 >
                     <option value="latest">Latest</option>
@@ -92,7 +112,7 @@ export function Filters({
                                 id={`brand-${br}`}
                                 label={br}
                                 value={br}
-                                checked={brand.includes(br)}
+                                checked={localBrand.includes(br)}
                                 onChange={handleBrandChange}
                             />
                         ))}
@@ -107,8 +127,8 @@ export function Filters({
                 <div className="input-group">
                     <span className="input-group-text">$</span>
                     <Form.Control
-                        type="text" // Use text to remove the spinner arrows
-                        value={minPrice === null ? "" : minPrice} // Display empty if null
+                        type="text"
+                        value={localMinPrice === null ? "" : localMinPrice}
                         onChange={handleMinPriceChange}
                         placeholder="Enter minimum price"
                         className="bg-light text-dark no-focus-outline"
@@ -121,14 +141,23 @@ export function Filters({
                 <div className="input-group">
                     <span className="input-group-text">$</span>
                     <Form.Control
-                        type="text" // Use text to remove the spinner arrows
-                        value={maxPrice === null ? "" : maxPrice} // Display empty if null
+                        type="text"
+                        value={localMaxPrice === null ? "" : localMaxPrice}
                         onChange={handleMaxPriceChange}
                         placeholder="Enter maximum price"
                         className="bg-light text-dark no-focus-outline"
                     />
                 </div>
             </Form.Group>
+
+            {/* Apply Filters Button */}
+            <Button
+                variant="primary"
+                onClick={handleApplyFilters}
+                className="mt-3"
+            >
+                Apply Filters
+            </Button>
         </div>
     );
 }

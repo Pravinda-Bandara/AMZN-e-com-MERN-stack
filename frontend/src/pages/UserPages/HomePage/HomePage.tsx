@@ -25,7 +25,7 @@ export function HomePage() {
   const [minPrice, setMinPrice] = useState<number | null>(null);
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
 
-  // Fetch products
+  // Fetch products with filters
   const { data, isLoading, error } = useGetProductsQuery({
     searchQuery: name,
     category,
@@ -37,7 +37,7 @@ export function HomePage() {
     maxPrice,
   });
 
-  // Fetch dynamic categories and brands with price range filtering
+  // Fetch dynamic categories and brands
   const { data: categories, isLoading: loadingCategories } = useGetCategoriesQuery(brand.join(','));
   const { data: brands, isLoading: loadingBrands } = useGetBrandsQuery(category, name, minPrice, maxPrice);
 
@@ -47,13 +47,19 @@ export function HomePage() {
     setName(searchInput); // Trigger API request
   };
 
-  // Trigger API request when searchInput becomes empty
-  useEffect(() => {
-    if (searchInput === '') {
-      setPage(1); // Reset to first page
-      setName(''); // Trigger API request with empty search
-    }
-  }, [searchInput]);
+  // Apply filters when the user clicks the "Apply Filters" button
+  const handleApplyFilters = (filters: {
+    sort: string;
+    brand: string[];
+    minPrice: number | null;
+    maxPrice: number | null;
+  }) => {
+    setSort(filters.sort);
+    setBrand(filters.brand);
+    setMinPrice(filters.minPrice);
+    setMaxPrice(filters.maxPrice);
+    setPage(1); // Reset to first page when filters are applied
+  };
 
   return (
     <div>
@@ -74,6 +80,7 @@ export function HomePage() {
             setMinPrice={setMinPrice}
             maxPrice={maxPrice}
             setMaxPrice={setMaxPrice}
+            onApplyFilters={handleApplyFilters} // Pass the function to apply filters
           />
         </Col>
 
