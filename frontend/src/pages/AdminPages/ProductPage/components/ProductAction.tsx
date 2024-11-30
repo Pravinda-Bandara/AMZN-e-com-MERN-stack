@@ -5,9 +5,16 @@ import { Product } from "../../../../types/Product";
 interface ProductActionsProps {
     product: Product;
     addToCartHandler: () => void;
+    handleEditProduct: () => void;
+    handleDeleteProduct: () => void;
 }
 
-export function ProductActions({ product, addToCartHandler }: ProductActionsProps) {
+export function ProductActions({
+    product,
+    addToCartHandler,
+    handleEditProduct,
+    handleDeleteProduct,
+}: ProductActionsProps) {
     return (
         <Card className="border m-0 p-0">
             <Card.Body>
@@ -39,6 +46,24 @@ export function ProductActions({ product, addToCartHandler }: ProductActionsProp
                             </Button>
                         </ListGroup.Item>
                     )}
+
+                    {/* Admin Actions */}
+                    <ListGroup.Item>
+                        <Button
+                            variant="warning"
+                            className="w-100 mb-2"
+                            onClick={handleEditProduct}
+                        >
+                            Edit Product
+                        </Button>
+                        <Button
+                            variant="danger"
+                            className="w-100"
+                            onClick={handleDeleteProduct}
+                        >
+                            Delete Product
+                        </Button>
+                    </ListGroup.Item>
                 </ListGroup>
             </Card.Body>
         </Card>

@@ -40,6 +40,19 @@ function ProductPage() {
         navigate("/");
     };
 
+    const handleEditProduct = () => {
+        navigate(`/admin/product/edit/${product!._id}`);
+    };
+
+    const handleDeleteProduct = () => {
+        // Confirm deletion
+        if (window.confirm("Are you sure you want to delete this product?")) {
+            // Call delete API (mocked here for now)
+            toast.success("Product deleted successfully", { autoClose: 1000 });
+            navigate("/admin/products");
+        }
+    };
+
     return (
         <div className="container border p-6 m-0">
             {isLoading ? (
@@ -59,7 +72,12 @@ function ProductPage() {
 
                     {/* Right Column: Product Actions */}
                     <div className="col-lg-4">
-                        <ProductActions product={product} addToCartHandler={addToCartHandler} />
+                        <ProductActions
+                            product={product}
+                            addToCartHandler={addToCartHandler}
+                            handleEditProduct={handleEditProduct}
+                            handleDeleteProduct={handleDeleteProduct}
+                        />
                     </div>
                 </div>
             )}

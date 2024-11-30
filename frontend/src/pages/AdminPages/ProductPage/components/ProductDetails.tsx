@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 import Rating from "../../../../components/Rating";
 import { Product } from "../../../../types/Product";
 
@@ -10,10 +10,10 @@ interface ProductDetailsProps {
 export function ProductDetails({ product }: ProductDetailsProps) {
     const productImage = `../${product.image}`;
     return (
-        <Card className="h-full border-0 m-0 p-0">
+        <Card className="shadow-0 border-0">
             <div className="flex flex-col md:flex-row gap-6 items-start">
                 {/* Product Image */}
-                <div className="flex w-full md:w-1/2 justify-center h-auto item-center">
+                <div className="flex w-full md:w-1/2 justify-center">
                     <img
                         src={productImage}
                         alt={product.name}
@@ -23,14 +23,33 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 
                 {/* Product Details */}
                 <div className="flex-grow">
-                    <h2 className="text-2xl font-semibold mb-3">{product.name}</h2>
+                    <h2 className="text-2xl font-bold mb-3">{product.name}</h2>
                     <Rating rating={product.rating} numReviews={product.numReviews} />
-                    <p className="mt-4 text-lg">
-                        <strong>Price: </strong>${product.price}
-                    </p>
-                    <p className="mt-2">
-                        <strong>Description: </strong>{product.description}
-                    </p>
+
+                    <div className="mt-4">
+                        <p className="text-lg">
+                            <strong>Price:</strong> ${product.price}
+                        </p>
+                        <p className="text-lg">
+                            <strong>Category:</strong> {product.category}
+                        </p>
+                        <p className="text-lg">
+                            <strong>Brand:</strong> {product.brand}
+                        </p>
+                        <p className="text-lg">
+                            <strong>In Stock:</strong> {product.countInStock > 0
+                                ? `${product.countInStock} items`
+                                : "Out of Stock"}
+                        </p>
+                        <p className="text-lg mt-2">
+                            <strong>Description:</strong> {product.description}
+                        </p>
+                        {product.isFeatured && (
+                            <p className="text-lg mt-2 text-success">
+                                <strong>Featured:</strong> Yes
+                            </p>
+                        )}
+                    </div>
                 </div>
             </div>
         </Card>

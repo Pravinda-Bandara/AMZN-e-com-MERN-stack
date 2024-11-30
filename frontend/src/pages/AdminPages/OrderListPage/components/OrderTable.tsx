@@ -45,7 +45,7 @@ export function OrderTable({
                                         <Button
                                             variant="info"
                                             size="sm"
-                                            onClick={() => navigate(`/order/${order._id}`)}
+                                            onClick={() => navigate(`/admin/order/${order._id}`)}
                                         >
                                             Details
                                         </Button>
