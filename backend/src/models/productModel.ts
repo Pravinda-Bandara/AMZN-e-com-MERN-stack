@@ -22,7 +22,9 @@ export class Product {
     @prop({ required: true, default: 0 })
     public price!: number
     @prop({ required: true, default: 0 })
-    public countInStock!: number
+    public realCountInStock!: number;
+    @prop({ required: true, default: 0 })
+    public virtualCountInStock!: number;
     @prop({ required: true, default: 0 })
     public rating!: number
     @prop({ required: true, default: 0 })
