@@ -41,7 +41,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                                 ? `${product.countInStock} items`
                                 : "Out of Stock"}
                         </p>
-                        <p className="text-lg mt-2">
+                        <p className="text-lg">
                             <strong>Description:</strong> {product.description}
                         </p>
                         {product.isFeatured && (

@@ -15,7 +15,7 @@ import { Col, Row } from "react-bootstrap";
 
 export default function PlaceOrderPage() {
     const navigate = useNavigate();
-    const { state } = useContext(Store);
+    const { state, dispatch } = useContext(Store);
     const { cart } = state;
 
     const round2 = (num: number) =>
@@ -41,6 +41,8 @@ export default function PlaceOrderPage() {
                 taxPrice: cart.taxPrice,
                 totalPrice: cart.totalPrice,
             });
+            // Clear cart
+            dispatch({ type: "CART_CLEAR" });
             localStorage.removeItem("cartItems");
             navigate(`/order/${data.order._id}`);
         } catch (err) {
@@ -60,8 +62,8 @@ export default function PlaceOrderPage() {
             <Helmet>
                 <title>Preview Order</title>
             </Helmet>
-            <h1 className="my-3">Preview Order</h1>
-            <Row>
+            <h1 className="my-3 h3 px-4">Preview Order</h1>
+            <Row className="px-4">
                 <Col md={8}>
                     <ShippingInfo shippingAddress={cart.shippingAddress} />
                     <PaymentInfo paymentMethod={cart.paymentMethod} />

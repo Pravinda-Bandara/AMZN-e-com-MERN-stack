@@ -27,6 +27,9 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                     <p className="mt-4 text-lg">
                         <strong>Price: </strong>${product.price}
                     </p>
+                    <p className="mt-2 text-lg">
+                        <strong>Brand: </strong>{product.brand}
+                    </p>
                     <p className="mt-2">
                         <strong>Description: </strong>{product.description}
                     </p>

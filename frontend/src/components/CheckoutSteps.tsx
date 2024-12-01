@@ -8,7 +8,7 @@ export default function CheckoutSteps(props: {
     step4?: boolean
 }) {
     return (
-        <Row className="checkout-steps">
+        <Row className="checkout-steps px-4">
             <Col className={props.step1 ? 'active' : ''}>Sign-In</Col>
             <Col className={props.step2 ? 'active' : ''}>Shipping</Col>
             <Col className={props.step3 ? 'active' : ''}>Payment</Col>

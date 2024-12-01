@@ -34,7 +34,7 @@ export function UserTable({ users, onEdit, onDelete }: UserTableProps) {
                                     <td>{user.isAdmin ? "YES" : "NO"}</td>
                                     <td>
                                         <Button
-                                            variant="secondary"
+                                            variant="warning"
                                             size="sm"
                                             onClick={() => onEdit(user._id)}
                                         >

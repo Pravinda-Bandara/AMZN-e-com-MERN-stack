@@ -43,9 +43,9 @@ export default function CartPage() {
             <Helmet>
                 <title>Shopping Cart</title>
             </Helmet>
-            <h1>Shopping Cart</h1>
-            <Row>
-                <Col md={8}>
+            <h1 className="h3 pb-4 mx-3">Shopping Cart</h1>
+            <Row className="mx-3">
+                <Col className="p-0" md={8}>
                     {cartItems.length === 0 ? (
                         <MessageBox>
                             Cart is empty. <Link to="/">Go Shopping</Link>
