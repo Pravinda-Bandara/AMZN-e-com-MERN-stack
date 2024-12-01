@@ -48,7 +48,7 @@ export default function OrderPage() {
             <Row>
                 <Col md={8}>
                     <ShippingDetails 
-                        shippingAddress={order.shippingAddress}
+                        shippingAddress={order?.shippingAddress}
                         isDelivered={order.isDelivered}
                         deliveredAt={order.deliveredAt}
                     />

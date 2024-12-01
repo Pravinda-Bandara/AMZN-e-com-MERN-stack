@@ -15,7 +15,7 @@ export function OrderTable({
     const navigate = useNavigate();
 
     return (
-        <div className="d-flex flex-column justify-between min-vh-100 ">
+        <div className="d-flex flex-column justify-between min-vh-100">
             <div className="flex-grow-1">
                 {orders.length === 0 ? (
                     <p>No Orders Found</p>
@@ -41,34 +41,53 @@ export function OrderTable({
                                     <td>{order.totalPrice.toFixed(2)}</td>
                                     <td>{order.isPaid ? order.paidAt.substring(0, 10) : "No"}</td>
                                     <td>{order.isDelivered ? order.deliveredAt.substring(0, 10) : "No"}</td>
-                                    <td>
+                                    <td className="space-x-2 flex justify-center">
                                         <Button
                                             variant="info"
                                             size="sm"
+                                            className="w-auto"
                                             onClick={() => navigate(`/admin/order/${order._id}`)}
                                         >
                                             Details
                                         </Button>
-                                        &nbsp;
                                         <Button
                                             variant="danger"
                                             size="sm"
+                                            className="w-auto"
                                             onClick={() => handleDeleteConfirmation(order._id)}
                                         >
                                             Delete
                                         </Button>
-                                        &nbsp;
-                                        {!order.isDelivered && order.isPaid ? (
-                                            <Button
-                                                variant="success"
-                                                size="sm"
-                                                onClick={() => handleDeliverConfirmation(order._id)}
-                                            >
-                                                Confirm Delivery
-                                            </Button>
+                                        {order.isPaid ? (
+                                            order.isDelivered ? (
+                                                <Button
+                                                    variant="success"
+                                                    size="sm"
+                                                    className="w-auto"
+                                                    disabled
+                                                >
+                                                    Delivered
+                                                </Button>
+                                            ) : (
+                                                <Button
+                                                    variant="success"
+                                                    size="sm"
+                                                    className="w-auto"
+                                                    onClick={() =>
+                                                        handleDeliverConfirmation(order._id)
+                                                    }
+                                                >
+                                                    Confirm Delivery
+                                                </Button>
+                                            )
                                         ) : (
-                                            <Button variant="success" size="sm" disabled>
-                                                Delivered
+                                            <Button
+                                                variant="warning"
+                                                size="sm"
+                                                className="w-auto"
+                                                disabled
+                                            >
+                                                Not Paid
                                             </Button>
                                         )}
                                     </td>
@@ -80,9 +99,11 @@ export function OrderTable({
             </div>
 
             {/* Create New Order Button (if needed) */}
-            <Button variant="primary" className="mt-3">
-                Create New Order
-            </Button>
+            <div className="mt-3">
+                <Button variant="primary" className="w-full">
+                    Create New Order
+                </Button>
+            </div>
         </div>
     );
 }

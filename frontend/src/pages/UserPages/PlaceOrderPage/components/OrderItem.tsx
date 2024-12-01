@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Card, ListGroup, Row, Col } from "react-bootstrap";
 
 interface OrderItemsProps {
     cartItems: {
@@ -15,31 +14,48 @@ interface OrderItemsProps {
 
 export function OrderItems({ cartItems }: OrderItemsProps) {
     return (
-        <Card className="mb-3">
-            <Card.Body>
-                <Card.Title>Items</Card.Title>
-                <ListGroup variant="flush">
-                    {cartItems.map((item) => (
-                        <ListGroup.Item key={item._id}>
-                            <Row className="align-items-center">
-                                <Col md={6}>
-                                    <img
-                                        src={item.image}
-                                        alt={item.name}
-                                        className="img-fluid rounded thumbnail"
-                                    ></img>{" "}
-                                    <Link to={`/product/${item.slug}`}>{item.name}</Link>
-                                </Col>
-                                <Col md={3}>
-                                    <span>{item.quantity}</span>
-                                </Col>
-                                <Col md={3}>${item.price}</Col>
-                            </Row>
-                        </ListGroup.Item>
-                    ))}
-                </ListGroup>
-                <Link to="/cart">Edit</Link>
-            </Card.Body>
-        </Card>
+        <div className="mb-4 p-6 bg-white rounded-lg border-1">
+            <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-semibold text-gray-800">Items</h2>
+                <Link
+                    to="/cart"
+                    className="text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors"
+                >
+                    Edit
+                </Link>
+            </div>
+            <div className="space-y-4">
+                {cartItems.map((item) => (
+                    <div key={item._id} className="flex justify-between items-center">
+                        <div className="flex items-center space-x-4">
+                            <img
+                                src={item.image}
+                                alt={item.name}
+                                className="w-16 h-16 object-cover rounded-lg"
+                            />
+                            <Link
+                                to={`/product/${item.slug}`}
+                                className="text-sm font-medium text-gray-800 hover:text-gray-600 transition-colors"
+                            >
+                                {item.name}
+                            </Link>
+                        </div>
+                        {/* Quantity and Price Section */}
+                        <div className="flex space-x-8 w-60 justify-between">
+                            {/* Quantity Section */}
+                            <div className="flex items-center space-x-2">
+                                <div className="text-sm font-semibold text-gray-700">Quantity:</div>
+                                <div className="text-sm font-semibold text-gray-700">{item.quantity}</div>
+                            </div>
+                            {/* Price Section */}
+                            <div className="flex items-center space-x-2">
+                                <div className="text-sm font-semibold text-gray-700">Price:</div>
+                                <div className="text-sm font-semibold text-gray-700">${item.price.toFixed(2)}</div>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
     );
 }

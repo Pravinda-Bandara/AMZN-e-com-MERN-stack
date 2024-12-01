@@ -28,18 +28,26 @@ export default function OrderPage() {
         toast.success("Order is paid");
     };
 
-    return isLoading ? (
-        <LoadingBox />
-    ) : error ? (
-        <MessageBox variant="danger">{getError(error)}</MessageBox>
-    ) : (
+    if (isLoading) {
+        return <LoadingBox />;
+    }
+
+    if (error) {
+        return <MessageBox variant="danger">{getError(error)}</MessageBox>;
+    }
+
+    if (!order) {
+        return <MessageBox variant="danger">Order not found</MessageBox>;
+    }
+
+    return (
         <div>
             <Helmet>
-                <title>Order {orderId}</title>
+                <title>Order Status</title>
             </Helmet>
-            <h1 className="my-3">Order {orderId}</h1>
-            <Row>
-                <Col md={8}>
+            <h1 className="my-3 h3 mx-3">Order Status</h1>
+            <Row className="mx-3">
+                <Col className="p-0" md={8}>
                     <ShippingDetails 
                         shippingAddress={order.shippingAddress}
                         isDelivered={order.isDelivered}

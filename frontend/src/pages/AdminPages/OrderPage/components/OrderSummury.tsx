@@ -59,7 +59,12 @@ export function OrderSummary({
                             </Button>
                         )}
                         {userInfo?.isAdmin && !isDelivered && isPaid && (
-                            <Button className="mt-3 mx-2" onClick={onDeliver} disabled={loadingDeliver}>
+                            <Button
+                                className="mt-3 mx-2"
+                                onClick={onDeliver}
+                                disabled={loadingDeliver}
+                                variant="success" // Set the button color to green
+                            >
                                 {loadingDeliver ? "Delivering..." : "Confirm Delivery"}
                             </Button>
                         )}

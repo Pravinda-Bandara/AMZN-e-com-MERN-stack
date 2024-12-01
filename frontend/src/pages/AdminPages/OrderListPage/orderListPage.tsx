@@ -50,7 +50,6 @@ export default function OrderListPage() {
             <Helmet>
                 <title>Orders</title>
             </Helmet>
-            <h1>Orders</h1>
             {isLoading ? (
                 <LoadingBox />
             ) : error ? (
