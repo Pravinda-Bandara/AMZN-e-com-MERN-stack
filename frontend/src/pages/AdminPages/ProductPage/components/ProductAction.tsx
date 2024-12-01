@@ -38,8 +38,7 @@ export function ProductActions({
                     {product.countInStock > 0 && (
                         <ListGroup.Item>
                             <Button
-                                variant="primary"
-                                className="w-100"
+                                className="w-100 customOrangeButton"
                                 onClick={addToCartHandler}
                             >
                                 Add to Cart

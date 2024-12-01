@@ -60,7 +60,7 @@ export function OrderSummary({
                                 type="button"
                                 onClick={onPlaceOrder}
                                 disabled={disableButton || isPending}
-                                className="btn-primary"
+                                className="customOrangeButton"
                             >
                                 {isPending ? "Placing Order..." : "Place Order"}
                             </Button>

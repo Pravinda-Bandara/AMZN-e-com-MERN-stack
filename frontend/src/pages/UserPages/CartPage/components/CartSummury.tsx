@@ -22,7 +22,7 @@ export function CartSummary({ cartItems, checkoutHandler }: CartSummaryProps) {
                         <div className="d-grid">
                             <Button
                                 type="button"
-                                variant="primary"
+                                className="customOrangeButton"
                                 onClick={checkoutHandler}
                                 disabled={cartItems.length === 0}
                             >

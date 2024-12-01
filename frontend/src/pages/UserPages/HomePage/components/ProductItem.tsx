@@ -49,8 +49,7 @@ export function ProductItem({ product }: { product: Product }) {
         ) : (
           <Button
             onClick={() => addToCartHandler(convertProductToCartItem(product))}
-            variant="primary"
-            className="my-1 mt-3"
+            className="my-1 mt-3 customOrangeButton"
           >
             Add to Cart
           </Button>

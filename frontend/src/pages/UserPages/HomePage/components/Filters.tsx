@@ -154,7 +154,7 @@ export function Filters({
             <Button
                 variant="primary"
                 onClick={handleApplyFilters}
-                className="mt-3"
+                className="mt-3 w-full"
             >
                 Apply Filters
             </Button>

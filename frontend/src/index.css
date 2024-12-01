@@ -30,10 +30,11 @@ img.thumbnail{
   color: #a0a0a0;
 }
 
-.checkout-steps >div.active{
-  border-bottom: 0.2rem solid springgreen;
-  color: springgreen;
+.checkout-steps > div.active {
+  border-bottom: 0.2rem solid #f97216; /* Orange-500 */
+  color: #f97216; /* Orange-500 */
 }
+
 footer {
   bottom: 0;
   left: 0;
@@ -146,3 +147,13 @@ button.side-navbar-user:hover {
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25); /* Light blue shadow */
   border-color: #80bdff; /* Custom border color */
 }
+
+.customOrangeButton {
+  @apply w-full py-2 text-white bg-orange-500 border border-orange-500 hover:bg-orange-600 focus:ring-2 focus:ring-orange-500 focus:outline-none disabled:bg-orange-300 disabled:border-orange-300 !important;
+}
+
+.customOrangeButton1 {
+  @apply py-2 text-white bg-orange-500 border border-orange-500 hover:bg-orange-600 focus:ring-2 focus:ring-orange-500 focus:outline-none disabled:bg-orange-300 disabled:border-orange-300 !important;
+}
+
+

@@ -16,7 +16,7 @@ export function Categories({ category, setCategory, categories }: CategoriesProp
             <Nav.Item>
                 <Nav.Link
                     eventKey=""
-                    className={`rounded-pill ${category === "" ? "bg-secondary text-white" : "text-dark"}`}
+                    className={`rounded-pill ${category === "" ? "bg-orange-500 text-white" : "text-dark"}`}
                 >
                     All Categories
                 </Nav.Link>
@@ -25,7 +25,7 @@ export function Categories({ category, setCategory, categories }: CategoriesProp
                 <Nav.Item key={cat}>
                     <Nav.Link
                         eventKey={cat}
-                        className={`rounded-pill ${category === cat ? "bg-secondary text-white" : "text-dark"}`}
+                        className={`rounded-pill ${category === cat ? "bg-orange-500 text-white" : "text-dark"}`}
                     >
                         {cat}
                     </Nav.Link>

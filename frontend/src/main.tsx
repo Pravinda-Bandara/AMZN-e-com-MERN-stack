@@ -32,6 +32,8 @@ import UserListPage from "./pages/AdminPages/UserListPage/userListPage.tsx";
 import SignupPage from "./pages/UserPages/SignupPage/SignupPage.tsx";
 import { ProductListPage1 } from './pages/AdminPages/ProductListPage1/ProductListPage1.tsx';
 import ProductPageAdmin from './pages/AdminPages/ProductPage/ProductPage.tsx';
+import AdminRoute from './components/AdminRoute.tsx';
+import NotFoundPage from './pages/CommenPages/NotFoundPage.tsx';
 
 
 const router = createBrowserRouter(
@@ -42,6 +44,7 @@ const router = createBrowserRouter(
             <Route path="signin" element={<SigninPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/404" element={<NotFoundPage />} />
             <Route path="" element={<ProtectedRoute />}>
                 <Route path="/orderhistory" element={<OrderHistoryPage />} />
                 <Route path="/shipping" element={<ShippingAddressPage />} />
@@ -49,14 +52,15 @@ const router = createBrowserRouter(
                 <Route path="/placeorder" element={<PlaceOrderPage />} />
                 <Route path="/order/:id" element={<OrderPage />} />
             </Route>
-            <Route path="/admin" element={<AdminDashboard />}>
-                <Route path="orders" element={<OrderListPage />} />
-                <Route path="users" element={<UserListPage />} />
-                <Route path="products" element={<ProductListPage1 />} />
-                <Route path="product/:slug" element={<ProductPageAdmin />} />
-                {<Route path="order/:id" element={<OrderPageAdmin />} />}
+            <Route path="" element={<AdminRoute />}>
+                <Route path="/admin" element={<AdminDashboard />}>
+                    <Route path="orders" element={<OrderListPage />} />
+                    <Route path="users" element={<UserListPage />} />
+                    <Route path="products" element={<ProductListPage1 />} />
+                    <Route path="product/:slug" element={<ProductPageAdmin />} />
+                    <Route path="order/:id" element={<OrderPageAdmin />} />
+                </Route>
             </Route>
-
         </Route>
     )
 );

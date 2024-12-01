@@ -56,7 +56,7 @@ export function OrderSummary({
                                 <Button
                                     type="button"
                                     onClick={onPay}
-                                    className="btn-primary"
+                                    className="customOrangeButton"
                                     size="lg"
                                 >
                                     Confirm Payment
