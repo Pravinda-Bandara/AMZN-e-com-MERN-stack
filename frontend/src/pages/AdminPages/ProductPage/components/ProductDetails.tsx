@@ -37,8 +37,13 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                             <strong>Brand:</strong> {product.brand}
                         </p>
                         <p className="text-lg">
-                            <strong>In Stock:</strong> {product.countInStock > 0
-                                ? `${product.countInStock} items`
+                            <strong>In Stock Virtual:</strong> {product.virtualCountInStock > 0
+                                ? `${product.virtualCountInStock} items`
+                                : "Out of Stock"}
+                        </p>
+                        <p className="text-lg">
+                            <strong>In Stock:</strong> {product.realCountInStock > 0
+                                ? `${product.realCountInStock} items`
                                 : "Out of Stock"}
                         </p>
                         <p className="text-lg">

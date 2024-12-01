@@ -27,7 +27,7 @@ export function ProductActions({
                     {/* Stock Status */}
                     <ListGroup.Item className="d-flex justify-content-between">
                         <strong>Status:</strong>
-                        {product.countInStock > 0 ? (
+                        {product.virtualCountInStock > 0 ? (
                             <Badge bg="success">In Stock</Badge>
                         ) : (
                             <Badge bg="danger">Out of Stock</Badge>
@@ -35,7 +35,7 @@ export function ProductActions({
                     </ListGroup.Item>
 
                     {/* Add to Cart Button */}
-                    {product.countInStock > 0 && (
+                    {product.virtualCountInStock > 0 && (
                         <ListGroup.Item>
                             <Button
                                 className="w-100 customOrangeButton"

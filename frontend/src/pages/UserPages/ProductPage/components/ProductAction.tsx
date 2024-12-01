@@ -20,7 +20,7 @@ export function ProductActions({ product, addToCartHandler }: ProductActionsProp
                     {/* Stock Status */}
                     <ListGroup.Item className="d-flex justify-content-between">
                         <strong>Status:</strong>
-                        {product.countInStock > 0 ? (
+                        {product.virtualCountInStock > 0 ? (
                             <Badge bg="success">In Stock</Badge>
                         ) : (
                             <Badge bg="danger">Out of Stock</Badge>
@@ -28,7 +28,7 @@ export function ProductActions({ product, addToCartHandler }: ProductActionsProp
                     </ListGroup.Item>
 
                     {/* Add to Cart Button */}
-                    {product.countInStock > 0 && (
+                    {product.virtualCountInStock > 0 && (
                         <ListGroup.Item>
                             <Button
                                 className="w-100 customOrangeButton"

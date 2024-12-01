@@ -26,7 +26,7 @@ function ProductPage() {
         const existItem = cart.cartItems.find((x) => x._id === product!._id);
         const quantity = existItem ? existItem.quantity + 1 : 1;
 
-        if (product!.countInStock < quantity) {
+        if (product!.virtualCountInStock < quantity) {
             toast.warn("Sorry, product is out of stock", { autoClose: 1000 });
             return;
         }

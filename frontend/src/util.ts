@@ -16,7 +16,8 @@ export const convertProductToCartItem = (product: Product): CartItem => {
         slug: product.slug,
         image: product.image,
         price: product.price,
-        countInStock: product.countInStock,
+        virtualCountInStock: product.virtualCountInStock,
+        realCountInStock: product.realCountInStock,
         quantity: 1,
     }
     return cartItem

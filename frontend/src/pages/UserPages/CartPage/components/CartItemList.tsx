@@ -49,7 +49,7 @@ export function CartItemList({ cartItems, updateCartHandler, removeItemHandler }
                             variant="outline-secondary"
                             size="sm"
                             onClick={() => updateCartHandler(item, item.quantity + 1)}
-                            disabled={item.quantity === item.countInStock}
+                            disabled={item.quantity === item.virtualCountInStock}
                             title="Increase quantity"
                         >
                             +

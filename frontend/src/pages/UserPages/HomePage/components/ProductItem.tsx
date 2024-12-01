@@ -18,7 +18,7 @@ export function ProductItem({ product }: { product: Product }) {
     const existingItem = cartItems.find((cartItem) => cartItem._id === product._id);
     const quantity = existingItem ? existingItem.quantity + 1 : 1;
 
-    if (product.countInStock < quantity) {
+    if (product.virtualCountInStock < quantity) {
       toast.warn("Sorry, this product is out of stock.", { autoClose: 1000 });
       return;
     }
@@ -42,7 +42,7 @@ export function ProductItem({ product }: { product: Product }) {
         </Link>
         <Rating rating={product.rating} numReviews={product.numReviews} />
         <Card.Text className="text-muted my-1">${product.price.toFixed(2)}</Card.Text>
-        {product.countInStock === 0 ? (
+        {product.virtualCountInStock === 0 ? (
           <Button className="m-1" variant="light" disabled>
             Out of Stock
           </Button>

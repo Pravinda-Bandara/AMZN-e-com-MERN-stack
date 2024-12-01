@@ -20,7 +20,7 @@ export default function CartPage() {
     } = useContext(Store);
 
     const updateCartHandler = (item: CartItem, quantity: number) => {
-        if (item.countInStock < quantity) {
+        if (item.virtualCountInStock < quantity) {
             toast.warn("Sorry. Product is out of stock", { autoClose: 1000 });
             return;
         }
