@@ -28,7 +28,7 @@ const ShippingAddressPage: React.FC = () => {
             </Helmet>
             <CheckoutSteps step1 step2 />
             <div className="container small-container">
-                <h1 className="my-3">Shipping Address</h1>
+                <h1 className="mt-3 h3 mx-2">Shipping Address</h1>
                 <ShippingAddressForm shippingAddress={shippingAddress} onSubmit={handleSubmit} />
             </div>
         </div>
