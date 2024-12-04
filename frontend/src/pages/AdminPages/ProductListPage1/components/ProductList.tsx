@@ -35,7 +35,8 @@ export function ProductList({ products, page, pages, setPage }: ProductListProps
     };
 
     return (
-        <div className="d-flex flex-column justify-between min-h-[550px]">
+        <div className="d-flex flex-column justify-between min-h-[500px]">
+            
             <div className="flex-grow-1">
                 {products.length === 0 ? (
                     <NoContent
@@ -126,15 +127,6 @@ export function ProductList({ products, page, pages, setPage }: ProductListProps
                     </Button>
                 </Modal.Footer>
             </Modal>
-
-            {/* Create Product Button */}
-            <Button
-                variant="primary"
-                onClick={() => navigate("/admin/products/create")}
-                className="mt-3"
-            >
-                Create New Product
-            </Button>
         </div>
     );
 }

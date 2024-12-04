@@ -35,11 +35,11 @@ export default function OrderListPage() {
     };
 
     return (
-        <div>
+        <div className="mx-4">
             <Helmet>
                 <title>Orders</title>
             </Helmet>
-            <h1>Orders</h1>
+            <h1 className="h3">Orders</h1>
             {isLoading ? (
                 <LoadingBox />
             ) : error ? (

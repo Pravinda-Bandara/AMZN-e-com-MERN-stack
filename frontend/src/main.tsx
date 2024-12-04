@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 import App from './App.tsx';
 import './index.css';
-import { HomePage } from "./pages/UserPages/HomePage/HomePage.tsx";
+
 
 
 
@@ -34,6 +34,7 @@ import { ProductListPage1 } from './pages/AdminPages/ProductListPage1/ProductLis
 import ProductPageAdmin from './pages/AdminPages/ProductPage/ProductPage.tsx';
 import AdminRoute from './components/AdminRoute.tsx';
 import NotFoundPage from './pages/CommenPages/NotFoundPage.tsx';
+import { HomePage } from './pages/UserPages/HomePage/HomePage.tsx';
 
 
 const router = createBrowserRouter(

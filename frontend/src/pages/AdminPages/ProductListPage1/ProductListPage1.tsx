@@ -67,7 +67,10 @@ export function ProductListPage1() {
       <Helmet>
         <title>Amazona</title>
       </Helmet>
+      <div className=" flex justify-between w-9/12">
       <h1 className="h3">Products</h1>
+      <Button className="m-2">Create New Product +</Button>
+      </div>
       <Row className="mb-3 flex justify-center">
         {/* Main Content - Product List */}
         <Col md={9}>
