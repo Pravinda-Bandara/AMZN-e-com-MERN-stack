@@ -57,7 +57,7 @@ export default function PlaceOrderPage() {
     }, [cart, navigate]);
 
     return (
-        <div>
+        <div className="mx-3">
             <CheckoutSteps step1 step2 step3 step4 />
             <Helmet>
                 <title>Preview Order</title>

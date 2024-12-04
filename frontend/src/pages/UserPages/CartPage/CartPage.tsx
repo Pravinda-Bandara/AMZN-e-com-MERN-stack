@@ -39,7 +39,7 @@ export default function CartPage() {
     };
 
     return (
-        <div className="mx-2">
+        <div className="mx-3">
             <Helmet>
                 <title>Shopping Cart</title>
             </Helmet>

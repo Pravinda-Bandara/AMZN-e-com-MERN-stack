@@ -63,6 +63,7 @@ Welcome to the E-Commerce Website using MERN Stack with TypeScript. This e-comme
 
 <div style="display: flex; justify-content: space-between;">
   <img src="./screenshots/11.png" alt="Screenshot">
+  <img src="./screenshots/12.png" alt="Screenshot">
 </div>
 
 ### Technologies Used

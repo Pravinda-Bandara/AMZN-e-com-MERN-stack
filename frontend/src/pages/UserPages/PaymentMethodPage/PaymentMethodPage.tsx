@@ -28,7 +28,7 @@ export default function PaymentMethodPage() {
         navigate('/placeorder')
     }
     return (
-        <div>
+        <div className="mx-3">
             <CheckoutSteps step1 step2 step3></CheckoutSteps>
             <div className="container small-container px-4">
                 <Helmet>

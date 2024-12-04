@@ -50,7 +50,7 @@ export default function SigninPage() {
             <Container className="w-full max-w-md">
                 <Card className="shadow-lg">
                     <Card.Body className="p-6">
-                        <h2 className="text-xl font-semibold text-center mb-4">Welcome Back</h2>
+                        <h2 className="text-xl font-semibold text-center mb-1">Welcome Back</h2>
                         <p className="text-center text-sm text-gray-500 mb-4">
                             Sign in to your account to continue
                         </p>

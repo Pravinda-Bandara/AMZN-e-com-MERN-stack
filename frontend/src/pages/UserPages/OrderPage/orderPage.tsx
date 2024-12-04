@@ -41,7 +41,7 @@ export default function OrderPage() {
     }
 
     return (
-        <div>
+        <div className="mx-3">
             <Helmet>
                 <title>Order Status</title>
             </Helmet>

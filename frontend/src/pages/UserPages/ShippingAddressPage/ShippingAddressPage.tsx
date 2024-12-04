@@ -22,7 +22,7 @@ const ShippingAddressPage: React.FC = () => {
     };
 
     return (
-        <div>
+        <div className='px-3'>
             <Helmet>
                 <title>Shipping Address</title>
             </Helmet>
