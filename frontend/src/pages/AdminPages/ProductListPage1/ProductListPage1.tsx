@@ -67,7 +67,7 @@ export function ProductListPage1() {
       <Helmet>
         <title>Amazona</title>
       </Helmet>
-
+      <h1 className="h3">Products</h1>
       <Row className="mb-3 flex justify-center">
         {/* Main Content - Product List */}
         <Col md={9}>

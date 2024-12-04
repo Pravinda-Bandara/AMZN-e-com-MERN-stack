@@ -48,7 +48,9 @@ export default function CartPage() {
                 <Col className="p-0" md={8}>
                     {cartItems.length === 0 ? (
                         <MessageBox>
-                            Cart is empty. <Link to="/">Go Shopping</Link>
+                            Cart is empty. <Link className="underline font-bold text-blue-500 hover:text-blue-700" to="/">
+                                Go Shopping
+                            </Link>
                         </MessageBox>
                     ) : (
                         <CartItemList

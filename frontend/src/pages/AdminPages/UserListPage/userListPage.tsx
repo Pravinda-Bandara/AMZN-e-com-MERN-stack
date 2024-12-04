@@ -46,6 +46,7 @@ export default function UserListPage() {
             <Helmet>
                 <title>Users</title>
             </Helmet>
+            <h1 className="h3">Users</h1>
             {loadingDelete && <LoadingBox />}
             {isLoading ? (
                 <LoadingBox />

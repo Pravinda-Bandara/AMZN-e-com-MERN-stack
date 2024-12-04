@@ -16,7 +16,7 @@ interface FiltersProps {
         brand: string[];
         minPrice: number | null;
         maxPrice: number | null;
-    }) => void; // Pass filters to parent on apply
+    }) => void;
 }
 
 export function Filters({
@@ -31,7 +31,6 @@ export function Filters({
     setMaxPrice,
     onApplyFilters,
 }: FiltersProps) {
-    // Local state to hold filter changes before applying
     const [localSort, setLocalSort] = useState(sort);
     const [localBrand, setLocalBrand] = useState(brand);
     const [localMinPrice, setLocalMinPrice] = useState(minPrice);
@@ -70,13 +69,27 @@ export function Filters({
         }
     };
 
-    // Apply filters when the button is clicked
     const handleApplyFilters = () => {
         onApplyFilters({
             sort: localSort,
             brand: localBrand,
             minPrice: localMinPrice,
             maxPrice: localMaxPrice,
+        });
+    };
+
+    // Clear Filters function
+    const handleClearFilters = () => {
+        setLocalSort('latest');
+        setLocalBrand([]);
+        setLocalMinPrice(null);
+        setLocalMaxPrice(null);
+
+        onApplyFilters({
+            sort: 'latest',
+            brand: [],
+            minPrice: null,
+            maxPrice: null,
         });
     };
 
@@ -157,6 +170,15 @@ export function Filters({
                 className="mt-3 w-full"
             >
                 Apply Filters
+            </Button>
+
+            {/* Clear Filters Button */}
+            <Button
+                variant="secondary"
+                onClick={handleClearFilters}
+                className="mt-3 w-full"
+            >
+                Reset Filters
             </Button>
         </div>
     );

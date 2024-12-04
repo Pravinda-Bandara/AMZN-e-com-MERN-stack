@@ -5,7 +5,7 @@ export default function AdminDashboard() {
   const location = useLocation();
 
   return (
-    <Container fluid className='flex justify-center w-full'>
+    <Container fluid className='flex justify-center w-full p-0 m-0'>
       <Row className='flex justify-center w-full'>
         {/* Sidebar */}
         <Col md={2} className="bg-light min-vh-100 text-dark">

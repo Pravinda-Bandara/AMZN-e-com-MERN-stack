@@ -50,7 +50,8 @@ export function ProductList({ products, page, pages, setPage }: ProductListProps
                                 <th>Category</th>
                                 <th>Brand</th>
                                 <th>Price</th>
-                                <th>Stock</th>
+                                <th>Real Stock</th>
+                                <th>Virtual Stock</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -61,6 +62,7 @@ export function ProductList({ products, page, pages, setPage }: ProductListProps
                                     <td>{product.category}</td>
                                     <td>{product.brand}</td>
                                     <td>${product.price.toFixed(2)}</td>
+                                    <td>{product.realCountInStock}</td>
                                     <td>{product.virtualCountInStock}</td>
                                     <td>
                                         <Button

@@ -113,9 +113,10 @@ function App() {
             </header>
 
             <main>
-                <Container className="mt-3">
+
+                <div className="mx-auto m-0 p-0">
                     <Outlet />
-                </Container>
+                </div>
             </main>
             <footer></footer>
         </div>
