@@ -24,15 +24,20 @@ export default function SigninPage() {
 
     const submitHandler = async (e: React.SyntheticEvent) => {
         e.preventDefault();
+
+        if (!email || !password) {
+            toast.error('Email and password are required', { autoClose: 1000 });
+            return; 
+        }
+
         try {
             const data = await signin({ email, password });
             dispatch({ type: 'USER_SIGNIN', payload: data });
             localStorage.setItem('userInfo', JSON.stringify(data));
             navigate(redirect);
         } catch (err) {
-            toast.error(getError(err as ApiError), {
-                autoClose: 1000,
-            });
+            const errorMessage = getError(err as ApiError);
+            toast.error(errorMessage, { autoClose: 1000 });
         }
     };
 
