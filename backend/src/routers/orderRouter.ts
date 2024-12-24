@@ -119,19 +119,35 @@ orderRouter.patch(
     isAuth,
     isAdmin,
     asyncHandler(async (req: Request, res: Response) => {
-        const order = await OrderModel.findById(req.params.id)
-        if (order) {
-            order.isDelivered = true
-            order.deliveredAt = new Date(Date.now())
-            // order.deliveredAt = Date.now();
+        const order = await OrderModel.findById(req.params.id);
 
-            const updatedOrder = await order.save()
-            res.send({ message: 'Order Delivered', order: updatedOrder })
+        if (order) {
+            for (const item of order.orderItems) {
+                const product = await ProductModel.findById(item.product);
+
+                if (product) {
+                    product.realCountInStock -= item.quantity;
+
+                    if (product.realCountInStock < 0) {
+                        product.realCountInStock = 0;
+                    }
+
+                    await product.save();
+                }
+            }
+
+            // Update order delivery status
+            order.isDelivered = true;
+            order.deliveredAt = new Date(Date.now());
+
+            const updatedOrder = await order.save();
+            res.send({ message: 'Order Delivered', order: updatedOrder });
         } else {
-            res.status(404).send({ message: 'Order Not Found' })
+            res.status(404).send({ message: 'Order Not Found' });
         }
     })
-)
+);
+
 
 
 
