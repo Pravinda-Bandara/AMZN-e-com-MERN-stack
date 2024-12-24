@@ -13,3 +13,16 @@ export type Product = {
     rating: number;
     numReviews: number;
 }
+
+// ProductCreate type for creating a product
+export type ProductCreate = {
+    name: string;
+    slug: string;
+    image: string;
+    brand: string;
+    category: string;
+    description: string;
+    price: number;
+    realCountInStock: number;
+    virtualCountInStock: number;
+};

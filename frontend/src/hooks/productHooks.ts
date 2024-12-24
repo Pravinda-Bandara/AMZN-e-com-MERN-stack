@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import apiClient from "../apiClient.ts";
-import { Product } from "../types/Product.ts";
+import { Product, ProductCreate } from "../types/Product.ts";
 
 // Define types for query options and responses
 type GetProductsQueryOptions = {
@@ -94,10 +94,11 @@ export const useGetAdminProductsQuery = (page: number, pageSize: number = 10) =>
 
 // Create a new product
 export const useCreateProductMutation = () =>
-    useMutation<{ product: Product; message: string }, Error>({
-        mutationFn: async () => {
+    useMutation<{ product: Product; message: string }, Error, ProductCreate>({
+        mutationFn: async (newProduct: ProductCreate) => {
             const response = await apiClient.post<{ product: Product; message: string }>(
-                `api/products`
+                `api/products`,
+                newProduct
             );
             return response.data;
         },
@@ -140,3 +141,6 @@ export const useGetBrandsQuery = (category: string, searchQuery: string, minPric
         },
         keepPreviousData: true, // Maintain old data during fetching
     });
+
+
+

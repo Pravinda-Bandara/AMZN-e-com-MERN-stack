@@ -149,32 +149,7 @@ productRouter.get(
     })
 );
 
-productRouter.post(
-    '/',
-    isAuth,
-    isAdmin,
-    asyncHandler(async (req: Request, res: Response) => {
-        const product = await ProductModel.create({
-            name: 'sample name ' + Date.now(),
-            image: '../assets/images/p1.jpg',
-            price: 0,
-            slug: 'sample-slug-' + Date.now(),
-            category: 'sample category',
-            brand: 'sample brand',
-            realCountInStock: 0,
-            virtualCountInStock: 0,
-            rating: 0,
-            numReviews: 0,
-            description: 'sample description',
-        } as Product);
 
-        const createdProduct = await product.save();
-        res.send({
-            message: 'Product Created',
-            product: createdProduct,
-        });
-    })
-);
 
 productRouter.delete(
     '/:id',
@@ -188,5 +163,45 @@ productRouter.delete(
         } else {
             res.status(404).send({ message: 'Product Not Found' });
         }
+    })
+);
+
+productRouter.post(
+    '/',
+    isAuth,
+    isAdmin,
+    asyncHandler(async (req: Request, res: Response) => {
+        const {
+            name,
+            slug,
+            image,
+            brand,
+            category,
+            description,
+            price,
+            realCountInStock,
+            virtualCountInStock,
+        } = req.body;
+
+        const existingProduct = await ProductModel.findOne({ slug });
+        if (existingProduct) {
+            res.status(400).send({ message: 'Product with this slug already exists.' });
+            return;
+        }
+
+        const product = new ProductModel({
+            name,
+            slug,
+            image,
+            brand,
+            category,
+            description,
+            price: Number(price) || 0,
+            realCountInStock: Number(realCountInStock) || 0,
+            virtualCountInStock: Number(virtualCountInStock) || 0,
+        });
+
+        const createdProduct = await product.save();
+        res.status(201).send({ message: 'Product Created', product: createdProduct });
     })
 );
