@@ -2,7 +2,7 @@ import express,{Request,Response} from "express";
 import {isAdmin, isAuth} from "../utils.js";
 import asyncHandler from "express-async-handler";
 import {OrderModel} from "../models/orderModel.js";
-import {Product} from "../models/productModel.js";
+import {Product,ProductModel} from "../models/productModel.js";
 export const orderRouter=express.Router();
 
 orderRouter.get(
@@ -87,20 +87,32 @@ orderRouter.patch(
     '/:id/pay',
     isAuth,
     asyncHandler(async (req: Request, res: Response) => {
-        const order = await OrderModel.findById(req.params.id).populate('user')
+        const order = await OrderModel.findById(req.params.id).populate('user');
 
         if (order) {
-            order.isPaid = true
-            order.paidAt = new Date(Date.now())
+            order.isPaid = true;
+            order.paidAt = new Date(Date.now());
+            for (const item of order.orderItems) {
+                const product = await ProductModel.findById(item.product);
 
-            const updatedOrder = await order.save()
-            console.log(updatedOrder)
-            res.send(updatedOrder)
+                if (product) {
+                    product.virtualCountInStock -= item.quantity;
+
+                    if (product.virtualCountInStock < 0) {
+                        product.virtualCountInStock = 0;
+                    }
+
+                    await product.save();
+                }
+            }
+
+            const updatedOrder = await order.save();
+            res.send(updatedOrder);
         } else {
-            res.status(404).send({ message: 'Order Not Found' })
+            res.status(404).send({ message: 'Order Not Found' });
         }
     })
-)
+);
 
 orderRouter.patch(
     '/:id/deliver',
