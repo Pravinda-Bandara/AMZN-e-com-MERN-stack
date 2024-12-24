@@ -35,6 +35,7 @@ import ProductPageAdmin from './pages/AdminPages/ProductPage/ProductPage.tsx';
 import AdminRoute from './components/AdminRoute.tsx';
 import NotFoundPage from './pages/CommenPages/NotFoundPage.tsx';
 import { HomePage } from './pages/UserPages/HomePage/HomePage.tsx';
+import CreateProductPage from './pages/AdminPages/createProductPage/CreateProductPage.tsx';
 
 
 const router = createBrowserRouter(
@@ -58,6 +59,7 @@ const router = createBrowserRouter(
                     <Route path="orders" element={<OrderListPage />} />
                     <Route path="users" element={<UserListPage />} />
                     <Route path="products" element={<ProductListPage1 />} />
+                    <Route path="products/create" element={<CreateProductPage />} />
                     <Route path="product/:slug" element={<ProductPageAdmin />} />
                     <Route path="order/:id" element={<OrderPageAdmin />} />
                 </Route>
