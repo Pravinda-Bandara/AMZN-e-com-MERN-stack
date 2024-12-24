@@ -23,22 +23,32 @@ apiClient.interceptors.request.use(
     }
 );
 
-// Response Interceptor
 apiClient.interceptors.response.use(
     (response) => {
         return response;
     },
     (error) => {
-        if (error.response && error.response.status === 401) {
-            // Token is expired or invalid, prompt user to log in again
-            localStorage.removeItem('userInfo');
-            window.location.href = '/signin'; // Redirect to login page
-        } else if (error.response && error.response.status === 403) {
-            // Handle forbidden error (e.g., access denied for non-admin users)
-            alert('Access denied.');
+        if (error.response) {
+            const { status, data } = error.response;
+
+            if (status === 401) {
+                if (data && data.message && data.message.includes('Invalid or expired token')) {
+                    localStorage.removeItem('userInfo');
+                    window.location.href = '/signin';
+                } else {
+                    console.error('Authentication error:', data.message || 'Invalid credentials');
+                }
+            }
+
+            else if (status === 403) {
+                alert('Access denied. You do not have permission to view this resource.');
+            }
+
+            else {
+                console.error('API Error:', data.message || error.message);
+            }
         } else {
-            // Handle other errors
-            console.error('API Error:', error.response || error.message);
+            console.error('API Error:', error.message);
         }
 
         return Promise.reject(error);
