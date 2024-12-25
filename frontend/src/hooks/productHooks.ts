@@ -92,18 +92,6 @@ export const useGetAdminProductsQuery = (page: number, pageSize: number = 10) =>
         },
     });
 
-// Create a new product
-export const useCreateProductMutation = () =>
-    useMutation<{ product: Product; message: string }, Error, ProductCreate>({
-        mutationFn: async (newProduct: ProductCreate) => {
-            const response = await apiClient.post<{ product: Product; message: string }>(
-                `api/products`,
-                newProduct
-            );
-            return response.data;
-        },
-    });
-
 // Delete a product by ID
 export const useDeleteProductMutation = () =>
     useMutation<void, Error, string>({
@@ -144,3 +132,19 @@ export const useGetBrandsQuery = (category: string, searchQuery: string, minPric
 
 
 
+// Create a product
+export const useCreateProductMutation = () =>
+    useMutation<{ product: Product; message: string }, Error, FormData>({
+        mutationFn: async (formData: FormData) => {
+            const response = await apiClient.post<{ product: Product; message: string }>(
+                `/api/products`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
+            );
+            return response.data;
+        },
+    });
