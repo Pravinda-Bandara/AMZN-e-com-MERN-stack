@@ -9,7 +9,7 @@ const CreateProductPage: React.FC = () => {
     const [formData, setFormData] = useState<ProductCreate>({
         name: "",
         slug: "",
-        image: "",
+        image: null as unknown as File, // Set as File for FormData compatibility
         brand: "",
         category: "",
         description: "",
@@ -27,20 +27,33 @@ const CreateProductPage: React.FC = () => {
             [name]: name === "price" || name.includes("CountInStock")
                 ? parseFloat(value) || 0
                 : name === "image" && files?.length
-                ? files[0].name // Set the file name temporarily
+                ? files[0] // Store the actual file
                 : value,
         }));
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        mutate(formData, {
+
+        // Prepare FormData for the mutation
+        const formDataToSubmit = new FormData();
+        formDataToSubmit.append("name", formData.name);
+        formDataToSubmit.append("slug", formData.slug);
+        formDataToSubmit.append("image", formData.image);
+        formDataToSubmit.append("brand", formData.brand);
+        formDataToSubmit.append("category", formData.category);
+        formDataToSubmit.append("description", formData.description);
+        formDataToSubmit.append("price", formData.price.toString());
+        formDataToSubmit.append("realCountInStock", formData.realCountInStock.toString());
+        formDataToSubmit.append("virtualCountInStock", formData.virtualCountInStock.toString());
+
+        mutate(formDataToSubmit, {
             onSuccess: (data) => {
                 console.log("Product created successfully:", data);
                 setFormData({
                     name: "",
                     slug: "",
-                    image: "",
+                    image: null as unknown as File,
                     brand: "",
                     category: "",
                     description: "",
