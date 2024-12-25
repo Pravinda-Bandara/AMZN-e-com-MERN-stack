@@ -3,7 +3,6 @@ import { Button, Form, Container, Row, Col, Alert, Spinner } from "react-bootstr
 import { ProductCreate } from "../../../types/Product";
 import { useCreateProductMutation } from "../../../hooks/productHooks";
 
-
 const CreateProductPage: React.FC = () => {
     const { mutate, isLoading, isError, error, isSuccess } = useCreateProductMutation();
 
@@ -19,11 +18,17 @@ const CreateProductPage: React.FC = () => {
         virtualCountInStock: 0,
     });
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
+    const handleInputChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        const { name, value, files } = e.target as HTMLInputElement;
         setFormData((prevData) => ({
             ...prevData,
-            [name]: name === "price" || name.includes("CountInStock") ? parseFloat(value) || 0 : value,
+            [name]: name === "price" || name.includes("CountInStock")
+                ? parseFloat(value) || 0
+                : name === "image" && files?.length
+                ? files[0].name // Set the file name temporarily
+                : value,
         }));
     };
 
@@ -54,7 +59,9 @@ const CreateProductPage: React.FC = () => {
         <Container className="mt-5">
             <Row>
                 <Col lg={6} md={8} sm={12} className="mx-auto">
-                    <h1 className="text-center text-2xl font-bold text-gray-800 mb-4">Create Product</h1>
+                    <h1 className="text-center text-2xl font-bold text-gray-800 mb-4">
+                        Create Product
+                    </h1>
                     {isError && <Alert variant="danger">{error?.message}</Alert>}
                     {isSuccess && <Alert variant="success">Product created successfully!</Alert>}
                     <Form onSubmit={handleSubmit} className="bg-white shadow-md p-4 rounded">
@@ -83,13 +90,12 @@ const CreateProductPage: React.FC = () => {
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="image">
-                            <Form.Label>Image URL</Form.Label>
+                            <Form.Label>Upload Image</Form.Label>
                             <Form.Control
-                                type="text"
+                                type="file"
                                 name="image"
-                                value={formData.image}
                                 onChange={handleInputChange}
-                                placeholder="Enter image URL"
+                                accept="image/*"
                                 required
                             />
                         </Form.Group>
