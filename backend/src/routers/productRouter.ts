@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import asyncHandler from 'express-async-handler';
 import { Product, ProductModel } from "../models/productModel.js";
 import { isAdmin, isAuth } from "../utils.js";
+import { upload } from "../cloudinary.js";
 
 export const productRouter = express.Router();
 
@@ -170,38 +171,36 @@ productRouter.post(
     '/',
     isAuth,
     isAdmin,
+    upload.single('image'),
     asyncHandler(async (req: Request, res: Response) => {
-        const {
-            name,
-            slug,
-            image,
-            brand,
-            category,
-            description,
-            price,
-            realCountInStock,
-            virtualCountInStock,
-        } = req.body;
+        try {
+            const { name, slug, brand, category, description, price, realCountInStock, virtualCountInStock } = req.body;
 
-        const existingProduct = await ProductModel.findOne({ slug });
-        if (existingProduct) {
-            res.status(400).send({ message: 'Product with this slug already exists.' });
-            return;
+            // Check for uploaded image
+            if (!req.file) {
+                res.status(400).send({ message: 'Image upload failed or missing' });
+                return;
+            }
+
+            // Create product
+            const product = new ProductModel({
+                name,
+                slug,
+                image: req.file.path, // Cloudinary image URL
+                brand,
+                category,
+                description,
+                price,
+                realCountInStock,
+                virtualCountInStock,
+            });
+
+            const createdProduct = await product.save();
+            res.status(201).send({ message: 'Product Created', product: createdProduct });
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({ message: 'Error creating product'});
+            
         }
-
-        const product = new ProductModel({
-            name,
-            slug,
-            image,
-            brand,
-            category,
-            description,
-            price: Number(price) || 0,
-            realCountInStock: Number(realCountInStock) || 0,
-            virtualCountInStock: Number(virtualCountInStock) || 0,
-        });
-
-        const createdProduct = await product.save();
-        res.status(201).send({ message: 'Product Created', product: createdProduct });
     })
 );
