@@ -8,14 +8,14 @@ interface ProductDetailsProps {
 }
 
 export function ProductDetails({ product }: ProductDetailsProps) {
-    const productImage = `../${product.image}`;
+    /* const productImage = `../${product.image}`; */
     return (
         <Card className="shadow-0 border-0">
             <div className="flex flex-col md:flex-row gap-6 items-start">
                 {/* Product Image */}
                 <div className="flex w-full md:w-1/2 justify-center">
                     <img
-                        src={productImage}
+                        src={product.image}
                         alt={product.name}
                         className="object-contain max-h-[400px] rounded"
                     />
