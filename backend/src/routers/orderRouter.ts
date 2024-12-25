@@ -96,7 +96,7 @@ orderRouter.patch(
                 const product = await ProductModel.findById(item.product);
 
                 if (product) {
-                    product.virtualCountInStock -= item.quantity;
+                    product.virtualCountInStock -= Number(item.quantity);
 
                     if (product.virtualCountInStock < 0) {
                         product.virtualCountInStock = 0;
@@ -126,7 +126,7 @@ orderRouter.patch(
                 const product = await ProductModel.findById(item.product);
 
                 if (product) {
-                    product.realCountInStock -= item.quantity;
+                    product.realCountInStock -= Number(item.quantity);
 
                     if (product.realCountInStock < 0) {
                         product.realCountInStock = 0;

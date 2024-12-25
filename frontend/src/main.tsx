@@ -35,7 +35,7 @@ import ProductPageAdmin from './pages/AdminPages/ProductPage/ProductPage.tsx';
 import AdminRoute from './components/AdminRoute.tsx';
 import NotFoundPage from './pages/CommenPages/NotFoundPage.tsx';
 import { HomePage } from './pages/UserPages/HomePage/HomePage.tsx';
-import CreateProductPage from './pages/AdminPages/createProductPage/CreateProductPage.tsx';
+import CreateProductPage from './pages/AdminPages/CreateProductPage/CreateProductPage.tsx';
 
 
 const router = createBrowserRouter(
