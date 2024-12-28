@@ -1,15 +1,19 @@
 import React, { useState } from "react";
-import { Button, Form, Container, Row, Col, Alert, Spinner } from "react-bootstrap";
+import { Button, Form, Container, Row, Col, Spinner } from "react-bootstrap";
 import { ProductCreate } from "../../../types/Product";
-import { useCreateProductMutation } from "../../../hooks/productHooks";
+import { useCreateProductMutation, useGetCategoriesQuery } from "../../../hooks/productHooks";
+
+import { ToastContainer, toast } from "react-toastify";
+
 
 const CreateProductPage: React.FC = () => {
     const { mutate, isLoading, isError, error, isSuccess } = useCreateProductMutation();
+    const { data: categories, isLoading: categoriesLoading } = useGetCategoriesQuery();
 
     const [formData, setFormData] = useState<ProductCreate>({
         name: "",
         slug: "",
-        image: null as unknown as File, // Set as File for FormData compatibility
+        image: null as unknown as File,
         brand: "",
         category: "",
         description: "",
@@ -17,6 +21,8 @@ const CreateProductPage: React.FC = () => {
         realCountInStock: 0,
         virtualCountInStock: 0,
     });
+
+    const [imagePreview, setImagePreview] = useState<string>("");
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -27,29 +33,28 @@ const CreateProductPage: React.FC = () => {
             [name]: name === "price" || name.includes("CountInStock")
                 ? parseFloat(value) || 0
                 : name === "image" && files?.length
-                ? files[0] // Store the actual file
+                ? files[0]
                 : value,
         }));
+
+        if (name === "image" && files?.length) {
+            const fileReader = new FileReader();
+            fileReader.onload = () => setImagePreview(fileReader.result as string);
+            fileReader.readAsDataURL(files[0]);
+        }
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Prepare FormData for the mutation
         const formDataToSubmit = new FormData();
-        formDataToSubmit.append("name", formData.name);
-        formDataToSubmit.append("slug", formData.slug);
-        formDataToSubmit.append("image", formData.image);
-        formDataToSubmit.append("brand", formData.brand);
-        formDataToSubmit.append("category", formData.category);
-        formDataToSubmit.append("description", formData.description);
-        formDataToSubmit.append("price", formData.price.toString());
-        formDataToSubmit.append("realCountInStock", formData.realCountInStock.toString());
-        formDataToSubmit.append("virtualCountInStock", formData.virtualCountInStock.toString());
+        Object.entries(formData).forEach(([key, value]) => {
+            formDataToSubmit.append(key, value as string | Blob);
+        });
 
         mutate(formDataToSubmit, {
             onSuccess: (data) => {
-                console.log("Product created successfully:", data);
+                toast.success("Product created successfully!");
                 setFormData({
                     name: "",
                     slug: "",
@@ -61,22 +66,23 @@ const CreateProductPage: React.FC = () => {
                     realCountInStock: 0,
                     virtualCountInStock: 0,
                 });
+                setImagePreview("");
             },
             onError: (err) => {
-                console.error("Error creating product:", err);
+                toast.error("Error creating product. Please try again.");
+                console.error(err);
             },
         });
     };
 
     return (
         <Container className="mt-5">
+            <ToastContainer />
             <Row>
                 <Col lg={6} md={8} sm={12} className="mx-auto">
                     <h1 className="text-center text-2xl font-bold text-gray-800 mb-4">
                         Create Product
                     </h1>
-                    {isError && <Alert variant="danger">{error?.message}</Alert>}
-                    {isSuccess && <Alert variant="success">Product created successfully!</Alert>}
                     <Form onSubmit={handleSubmit} className="bg-white shadow-md p-4 rounded">
                         <Form.Group className="mb-3" controlId="name">
                             <Form.Label>Product Name</Form.Label>
@@ -111,6 +117,15 @@ const CreateProductPage: React.FC = () => {
                                 accept="image/*"
                                 required
                             />
+                            {imagePreview && (
+                                <div className="mt-3">
+                                    <img
+                                        src={imagePreview}
+                                        alt="Preview"
+                                        style={{ maxWidth: "100%", maxHeight: "200px" }}
+                                    />
+                                </div>
+                            )}
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="brand">
@@ -127,14 +142,20 @@ const CreateProductPage: React.FC = () => {
 
                         <Form.Group className="mb-3" controlId="category">
                             <Form.Label>Category</Form.Label>
-                            <Form.Control
-                                type="text"
+                            <Form.Select
                                 name="category"
                                 value={formData.category}
-                                onChange={handleInputChange}
-                                placeholder="Enter product category"
+                                onChange={(e) => handleInputChange(e as unknown as React.ChangeEvent<HTMLInputElement>)}
                                 required
-                            />
+                                disabled={categoriesLoading}
+                            >
+                                <option value="">Select a category</option>
+                                {categories?.map((cat: string) => (
+                                    <option key={cat} value={cat}>
+                                        {cat}
+                                    </option>
+                                ))}
+                            </Form.Select>
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="description">
@@ -152,20 +173,23 @@ const CreateProductPage: React.FC = () => {
 
                         <Form.Group className="mb-3" controlId="price">
                             <Form.Label>Price</Form.Label>
-                            <Form.Control
-                                type="number"
-                                name="price"
-                                value={formData.price}
-                                onChange={handleInputChange}
-                                placeholder="Enter product price"
-                                required
-                            />
+                            <div className="input-group">
+                                <span className="input-group-text">$</span>
+                                <Form.Control
+                                    type="text"
+                                    name="price"
+                                    value={formData.price}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter product price"
+                                    required
+                                />
+                            </div>
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="realCountInStock">
                             <Form.Label>Real Count in Stock</Form.Label>
                             <Form.Control
-                                type="number"
+                                type="text"
                                 name="realCountInStock"
                                 value={formData.realCountInStock}
                                 onChange={handleInputChange}
@@ -177,7 +201,7 @@ const CreateProductPage: React.FC = () => {
                         <Form.Group className="mb-3" controlId="virtualCountInStock">
                             <Form.Label>Virtual Count in Stock</Form.Label>
                             <Form.Control
-                                type="number"
+                                type="text"
                                 name="virtualCountInStock"
                                 value={formData.virtualCountInStock}
                                 onChange={handleInputChange}
