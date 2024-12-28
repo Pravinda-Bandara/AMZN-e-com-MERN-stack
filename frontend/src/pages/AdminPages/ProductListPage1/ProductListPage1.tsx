@@ -10,6 +10,7 @@ import { Categories } from "../../UserPages/HomePage/components/Categories.tsx";
 import { SearchSection } from "../../UserPages/HomePage/components/SearchSection.tsx";
 import { Filters } from "../../UserPages/HomePage/components/Filters.tsx";
 import { ProductList } from "./components/ProductList.tsx";
+import { useNavigate } from "react-router-dom";
 
 
 export function ProductListPage1() {
@@ -21,6 +22,7 @@ export function ProductListPage1() {
   const [sort, setSort] = useState<string>('latest');
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(8);
+  const navigate = useNavigate();
 
   // State for min and max price range (set initial to null for no price filter)
   const [minPrice, setMinPrice] = useState<number | null>(null);
@@ -69,7 +71,7 @@ export function ProductListPage1() {
       </Helmet>
       <div className=" flex justify-between w-9/12">
       <h1 className="h3">Products</h1>
-      <Button className="m-2">Create New Product +</Button>
+      <Button className="m-2" onClick={() => navigate(`create`)}>Create New Product +</Button>
       </div>
       <Row className="mb-3 flex justify-center">
         {/* Main Content - Product List */}
