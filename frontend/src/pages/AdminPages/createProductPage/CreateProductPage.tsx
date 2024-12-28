@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Form, Container, Row, Col, Spinner } from "react-bootstrap";
 import { ProductCreate } from "../../../types/Product";
 import { useCreateProductMutation, useGetCategoriesQuery } from "../../../hooks/productHooks";
-
 import { ToastContainer, toast } from "react-toastify";
 
-
 const CreateProductPage: React.FC = () => {
-    const { mutate, isLoading, isError, error, isSuccess } = useCreateProductMutation();
+    const { mutate, isPending, isError, error, isSuccess } = useCreateProductMutation();
     const { data: categories, isLoading: categoriesLoading } = useGetCategoriesQuery();
 
     const [formData, setFormData] = useState<ProductCreate>({
@@ -23,6 +21,16 @@ const CreateProductPage: React.FC = () => {
     });
 
     const [imagePreview, setImagePreview] = useState<string>("");
+
+    // Auto-generate slug and productName
+    useEffect(() => {
+        if (formData.brand && formData.name && formData.category) {
+            const slug = `${formData.brand}-${formData.name}-${formData.category}`
+                .toLowerCase()
+                .replace(/\s+/g, "-");
+            setFormData((prevData) => ({ ...prevData, slug }));
+        }
+    }, [formData.brand, formData.name, formData.category]);
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -79,53 +87,29 @@ const CreateProductPage: React.FC = () => {
         <Container className="mt-5">
             <ToastContainer />
             <Row>
-                <Col lg={6} md={8} sm={12} className="mx-auto">
+                <Col lg={6} md={8} sm={12} className="w-full">
                     <h1 className="text-center text-2xl font-bold text-gray-800 mb-4">
                         Create Product
                     </h1>
-                    <Form onSubmit={handleSubmit} className="bg-white shadow-md p-4 rounded">
+                    <Form onSubmit={handleSubmit} className="bg-white border-1 p-4 rounded">
+                    <Form.Group className="mb-3" controlId="productName">
+                            <Form.Label>Virtual Product Name</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={`${formData.brand} ${formData.name} ${formData.category}`}
+                                readOnly
+                            />
+                        </Form.Group>
                         <Form.Group className="mb-3" controlId="name">
-                            <Form.Label>Product Name</Form.Label>
+                            <Form.Label>Product Name (Base)</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="name"
                                 value={formData.name}
                                 onChange={handleInputChange}
-                                placeholder="Enter product name"
+                                placeholder="Enter product base name"
                                 required
                             />
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="slug">
-                            <Form.Label>Slug</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="slug"
-                                value={formData.slug}
-                                onChange={handleInputChange}
-                                placeholder="Enter product slug"
-                                required
-                            />
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="image">
-                            <Form.Label>Upload Image</Form.Label>
-                            <Form.Control
-                                type="file"
-                                name="image"
-                                onChange={handleInputChange}
-                                accept="image/*"
-                                required
-                            />
-                            {imagePreview && (
-                                <div className="mt-3">
-                                    <img
-                                        src={imagePreview}
-                                        alt="Preview"
-                                        style={{ maxWidth: "100%", maxHeight: "200px" }}
-                                    />
-                                </div>
-                            )}
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="brand">
@@ -156,6 +140,33 @@ const CreateProductPage: React.FC = () => {
                                     </option>
                                 ))}
                             </Form.Select>
+                        </Form.Group>
+
+                        
+
+                        <Form.Group className="mb-3" controlId="slug">
+                            <Form.Label>Generated Slug</Form.Label>
+                            <Form.Control type="text" value={formData.slug} readOnly />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="image">
+                            <Form.Label>Upload Image</Form.Label>
+                            <Form.Control
+                                type="file"
+                                name="image"
+                                onChange={handleInputChange}
+                                accept="image/*"
+                                required
+                            />
+                            {imagePreview && (
+                                <div className="mt-3">
+                                    <img
+                                        src={imagePreview}
+                                        alt="Preview"
+                                        style={{ maxWidth: "100%", maxHeight: "200px" }}
+                                    />
+                                </div>
+                            )}
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="description">
@@ -211,7 +222,7 @@ const CreateProductPage: React.FC = () => {
                         </Form.Group>
 
                         <Button variant="primary" type="submit" className="w-full">
-                            {isLoading ? <Spinner animation="border" size="sm" /> : "Create Product"}
+                            {isPending ? <Spinner animation="border" size="sm" /> : "Create Product"}
                         </Button>
                     </Form>
                 </Col>
