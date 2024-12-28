@@ -36,6 +36,7 @@ import AdminRoute from './components/AdminRoute.tsx';
 import NotFoundPage from './pages/CommenPages/NotFoundPage.tsx';
 import { HomePage } from './pages/UserPages/HomePage/HomePage.tsx';
 import CreateProductPage from './pages/AdminPages/CreateProductPage/CreateProductPage.tsx';
+import Profile from './pages/UserPages/Profile/Profile.tsx';
 
 
 const router = createBrowserRouter(
@@ -53,6 +54,7 @@ const router = createBrowserRouter(
                 <Route path="/payment" element={<PaymentMethodPage />} />
                 <Route path="/placeorder" element={<PlaceOrderPage />} />
                 <Route path="/order/:id" element={<OrderPage />} />
+                <Route path="/profile" element={<Profile />} />
             </Route>
             <Route path="" element={<AdminRoute />}>
                 <Route path="/admin" element={<AdminDashboard />}>
