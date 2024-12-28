@@ -22,7 +22,7 @@ const CreateProductPage: React.FC = () => {
 
     const [imagePreview, setImagePreview] = useState<string>("");
 
-    // Auto-generate slug and productName
+    // Auto-generate slug
     useEffect(() => {
         if (formData.brand && formData.name && formData.category) {
             const slug = `${formData.brand}-${formData.name}-${formData.category}`
@@ -41,8 +41,8 @@ const CreateProductPage: React.FC = () => {
             [name]: name === "price" || name.includes("CountInStock")
                 ? parseFloat(value) || 0
                 : name === "image" && files?.length
-                ? files[0]
-                : value,
+                    ? files[0]
+                    : value,
         }));
 
         if (name === "image" && files?.length) {
@@ -61,7 +61,7 @@ const CreateProductPage: React.FC = () => {
         });
 
         mutate(formDataToSubmit, {
-            onSuccess: (data) => {
+            onSuccess: () => {
                 toast.success("Product created successfully!");
                 setFormData({
                     name: "",
@@ -76,9 +76,8 @@ const CreateProductPage: React.FC = () => {
                 });
                 setImagePreview("");
             },
-            onError: (err) => {
+            onError: () => {
                 toast.error("Error creating product. Please try again.");
-                console.error(err);
             },
         });
     };
@@ -86,22 +85,44 @@ const CreateProductPage: React.FC = () => {
     return (
         <Container className="mt-5">
             <ToastContainer />
+            {/* Spinner Overlay */}
+            {isPending && (
+                <div
+                    className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                    style={{ background: "rgba(255, 255, 255, 0.8)", zIndex: 1050 }}
+                >
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                </div>
+            )}
+
             <Row>
                 <Col lg={6} md={8} sm={12} className="w-full">
                     <h1 className="text-center text-2xl font-bold text-gray-800 mb-4">
                         Create Product
                     </h1>
                     <Form onSubmit={handleSubmit} className="bg-white border-1 p-4 rounded">
-                    <Form.Group className="mb-3" controlId="productName">
-                            <Form.Label>Virtual Product Name</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={`${formData.brand} ${formData.name} ${formData.category}`}
-                                readOnly
-                            />
-                        </Form.Group>
+                        {/* Virtual Product Name */}
+                        <Form.Group className="mb-3" controlId="productName">
+    <Form.Label>Virtual Product Name</Form.Label>
+    <Form.Control
+        type="text"
+        value={
+            formData.brand && formData.name && formData.category
+                ? `${formData.brand} ${formData.name} ${formData.category}`
+                : ""
+        }
+        placeholder="Will be auto-generated based on Brand, Name, and Category"
+        readOnly
+        disabled
+        className="bg-gray-200" // Gray background for a visually disabled appearance
+    />
+</Form.Group>
+
+                        {/* Product Base Name */}
                         <Form.Group className="mb-3" controlId="name">
-                            <Form.Label>Product Name (Base)</Form.Label>
+                            <Form.Label>Base Name</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="name"
@@ -142,12 +163,13 @@ const CreateProductPage: React.FC = () => {
                             </Form.Select>
                         </Form.Group>
 
-                        
-
-                        <Form.Group className="mb-3" controlId="slug">
-                            <Form.Label>Generated Slug</Form.Label>
-                            <Form.Control type="text" value={formData.slug} readOnly />
-                        </Form.Group>
+                        {/* Generated Slug (Hidden) */}
+                        <div className="d-none">
+                            <Form.Group className="mb-3" controlId="slug">
+                                <Form.Label>Generated Slug</Form.Label>
+                                <Form.Control type="text" value={formData.slug} readOnly />
+                            </Form.Group>
+                        </div>
 
                         <Form.Group className="mb-3" controlId="image">
                             <Form.Label>Upload Image</Form.Label>
